@@ -1,4 +1,19 @@
-export type Country = 'morocco' | 'algeria' | 'tunisia' | 'libya' | 'mauritania' | 'arab' | 'world' | 'all';
+export type Country = 
+  | 'morocco' 
+  | 'algeria' 
+  | 'tunisia' 
+  | 'libya' 
+  | 'mauritania' 
+  | 'saudi'
+  | 'uae'
+  | 'qatar'
+  | 'kuwait'
+  | 'oman'
+  | 'bahrain'
+  | 'gulf'
+  | 'arab' 
+  | 'world' 
+  | 'all';
 
 export type Category = 
   | 'all'
@@ -7,6 +22,13 @@ export type Category =
   | 'tunisia'
   | 'libya'
   | 'mauritania'
+  | 'gulf'
+  | 'saudi'
+  | 'uae'
+  | 'qatar'
+  | 'kuwait'
+  | 'oman'
+  | 'bahrain'
   | 'arab'
   | 'world'
   | 'economy'

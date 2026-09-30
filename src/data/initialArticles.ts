@@ -3,10 +3,12 @@ import { ARTICLES_ORIGINAL } from './articlesOriginal';
 import { ARTICLES_MOROCCO } from './articlesMorocco';
 import { ARTICLES_WORLD } from './articlesWorld';
 import { ARTICLES_COOKING } from './articlesCooking';
+import { ARTICLES_GULF } from './articlesGulf';
 
 export const INITIAL_ARTICLES: Article[] = [
   ...ARTICLES_ORIGINAL,
   ...ARTICLES_MOROCCO,
+  ...ARTICLES_GULF,
   ...ARTICLES_WORLD,
   ...ARTICLES_COOKING
 ];
@@ -121,6 +123,7 @@ export const INITIAL_RSS_FEED: RssFeedItem[] = [
 export const CATEGORIES_CONFIG = [
   { id: 'all', label: 'الرئيسية', icon: 'Home' },
   { id: 'morocco', label: 'أخبار المغرب', flag: '🇲🇦', icon: 'Globe' },
+  { id: 'gulf', label: 'دول الخليج العربي', flag: '🌴', icon: 'Globe' },
   { id: 'world', label: 'أخبار العالم', icon: 'Compass' },
   { id: 'economy', label: 'اقتصاد وأعمال', icon: 'TrendingUp' },
   { id: 'cooking', label: 'طبخ ووصفات', icon: 'UtensilsCrossed' },
@@ -139,4 +142,13 @@ export const MAGHREB_COUNTRIES = [
   { id: 'tunisia', name: 'تونس', flag: '🇹🇳', capital: 'تونس', currency: 'دينار تونسي (TND)' },
   { id: 'libya', name: 'ليبيا', flag: '🇱🇾', capital: 'طرابلس', currency: 'دينار ليبي (LYD)' },
   { id: 'mauritania', name: 'موريتانيا', flag: '🇲🇷', capital: 'نواكشوط', currency: 'أوقية موريتانية (MRU)' }
+];
+
+export const GULF_COUNTRIES = [
+  { id: 'saudi', name: 'المملكة العربية السعودية', shortName: 'السعودية', flag: '🇸🇦', capital: 'الرياض', currency: 'ريال سعودي (SAR)' },
+  { id: 'uae', name: 'الإمارات العربية المتحدة', shortName: 'الإمارات', flag: '🇦🇪', capital: 'أبوظبي', currency: 'درهم إماراتي (AED)' },
+  { id: 'qatar', name: 'دولة قطر', shortName: 'قطر', flag: '🇶🇦', capital: 'الدوحة', currency: 'ريال قطري (QAR)' },
+  { id: 'kuwait', name: 'دولة الكويت', shortName: 'الكويت', flag: '🇰🇼', capital: 'مدينة الكويت', currency: 'دينار كويتي (KWD)' },
+  { id: 'oman', name: 'سلطنة عمان', shortName: 'عمان', flag: '🇴🇲', capital: 'مسقط', currency: 'ريال عماني (OMR)' },
+  { id: 'bahrain', name: 'مملكة البحرين', shortName: 'البحرين', flag: '🇧🇭', capital: 'المنامة', currency: 'دينار بحريني (BHD)' }
 ];

@@ -29,7 +29,7 @@ import {
 import { Article, Comment, ViewMode, Category } from '../types';
 import { AdSenseBanner } from './AdSenseBanner';
 import { ArticleCard } from './ArticleCard';
-import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
+import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } from '../data/initialArticles';
 
 interface ArticleDetailProps {
   article: Article;
@@ -179,8 +179,11 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
   };
 
   const getCountryName = (c: string) => {
-    const match = MAGHREB_COUNTRIES.find((item) => item.id === c);
-    return match ? `${match.flag} ${match.name}` : (c === 'world' ? '🌍 العالم' : '🌍 المغرب العربي');
+    const maghrebMatch = MAGHREB_COUNTRIES.find((item) => item.id === c);
+    if (maghrebMatch) return `${maghrebMatch.flag} ${maghrebMatch.name}`;
+    const gulfMatch = GULF_COUNTRIES.find((item) => item.id === c);
+    if (gulfMatch) return `${gulfMatch.flag} ${gulfMatch.name}`;
+    return (c === 'world' ? '🌍 العالم' : '🌍 المغرب العربي');
   };
 
   const getCategoryLabel = (cat: string) => {

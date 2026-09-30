@@ -21,7 +21,7 @@ import {
   Globe
 } from 'lucide-react';
 import { Category, Country, ViewMode, Article } from '../types';
-import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
+import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } from '../data/initialArticles';
 
 interface HeaderProps {
   currentCategory: Category;
@@ -102,9 +102,9 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Left side (RTL end): Flags, Admin CMS, Tools */}
           <div className="flex items-center gap-3">
-            {/* Quick Country Filters */}
+            {/* Quick Country Filters (المغرب العربي + دول الخليج) */}
             <div className="hidden lg:flex items-center gap-1 bg-white dark:bg-stone-900 px-2 py-0.5 rounded border border-stone-200 dark:border-stone-800">
-              <span className="text-[11px] text-stone-400 font-semibold ml-1">الدول:</span>
+              <span className="text-[11px] text-stone-400 font-semibold ml-1">المغرب:</span>
               {MAGHREB_COUNTRIES.map((c) => (
                 <button
                   key={c.id}
@@ -114,6 +114,19 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <span>{c.flag}</span>
                   <span className="text-stone-700 dark:text-stone-300">{c.name}</span>
+                </button>
+              ))}
+              <span className="text-stone-300 dark:text-stone-700 mx-1">|</span>
+              <span className="text-[11px] text-amber-600 font-semibold ml-1">الخليج:</span>
+              {GULF_COUNTRIES.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => onSelectCountry(c.id as Country)}
+                  title={c.name}
+                  className="px-1.5 py-0.5 text-xs hover:bg-stone-100 dark:hover:bg-stone-800 rounded transition flex items-center gap-1"
+                >
+                  <span>{c.flag}</span>
+                  <span className="text-stone-700 dark:text-stone-300">{c.shortName}</span>
                 </button>
               ))}
             </div>
@@ -313,6 +326,28 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               );
             })}
+          </div>
+
+          {/* دول الخليج العربي في القائمة المتنقلة */}
+          <p className="text-xs font-bold text-amber-500 mb-2 uppercase tracking-wider flex items-center gap-1">
+            <span>🌴</span>
+            <span>دول الخليج العربي</span>
+          </p>
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {GULF_COUNTRIES.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => {
+                  onSelectCountry(c.id as Country);
+                  onNavigate('home');
+                  setMobileMenuOpen(false);
+                }}
+                className="px-3 py-2 text-right rounded text-xs font-semibold bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 hover:bg-amber-100 dark:hover:bg-amber-950/40 transition flex items-center gap-2"
+              >
+                <span>{c.flag}</span>
+                <span className="truncate">{c.name}</span>
+              </button>
+            ))}
           </div>
 
           {isAdmin && (

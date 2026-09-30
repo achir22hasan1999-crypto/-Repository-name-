@@ -20,7 +20,8 @@ import { Article, Category, Country } from '../types';
 import { ArticleCard } from './ArticleCard';
 import { AdSenseBanner } from './AdSenseBanner';
 import { VideoSection } from './VideoSection';
-import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
+import { GulfNewsSection } from './GulfNewsSection';
+import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } from '../data/initialArticles';
 
 interface HomePageProps {
   articles: Article[];
@@ -54,6 +55,16 @@ export const HomePage: React.FC<HomePageProps> = ({
         flag: country.flag,
         description: `متابعة حية وشاملة ومستمرة لأحدث الأخبار والتطورات السياسية والاقتصادية والاجتماعية في ${country.name}.`,
         badge: country.capital ? `العاصمة: ${country.capital} · العملة: ${country.currency}` : undefined,
+      };
+    }
+
+    const gulfCountry = GULF_COUNTRIES.find((c) => c.id === cat);
+    if (gulfCountry) {
+      return {
+        title: `أخبار ${gulfCountry.name}`,
+        flag: gulfCountry.flag,
+        description: `متابعة حية وشاملة ومستمرة لأحدث الأخبار والتطورات الاقتصادية والتكنولوجية والاستثمارية في ${gulfCountry.name}.`,
+        badge: `العاصمة: ${gulfCountry.capital} · العملة: ${gulfCountry.currency}`,
       };
     }
 
@@ -124,6 +135,12 @@ export const HomePage: React.FC<HomePageProps> = ({
           icon: '✨',
           description: 'قصص نجاح ملهمة، غرائب العلوم والطبيعة، وأسرار الوجهات السياحية المغاربية الاستثنائية.',
         };
+      case 'gulf':
+        return {
+          title: 'أخبار دول الخليج العربي الرائجة',
+          flag: '🌴',
+          description: 'تغطية إخبارية حصرية للمشاريع التنموية الكبرى، الاستثمارات الاقتصادية، والذكاء الاصطناعي في دول مجلس التعاون الخليجي الست.',
+        };
       default:
         const conf = CATEGORIES_CONFIG.find((c) => c.id === cat);
         return {
@@ -148,13 +165,21 @@ export const HomePage: React.FC<HomePageProps> = ({
     );
   } else if (currentCategory !== 'all') {
     filtered = filtered.filter((a) => {
-      // Country matches
+      // Maghreb Country matches
       if (currentCategory === 'morocco') return a.country === 'morocco' || a.category === 'morocco';
       if (currentCategory === 'algeria') return a.country === 'algeria' || a.category === 'algeria';
       if (currentCategory === 'tunisia') return a.country === 'tunisia' || a.category === 'tunisia';
       if (currentCategory === 'libya') return a.country === 'libya' || a.category === 'libya';
       if (currentCategory === 'mauritania') return a.country === 'mauritania' || a.category === 'mauritania';
       if (currentCategory === 'world') return a.country === 'world' || a.category === 'world';
+
+      // Gulf Countries matches
+      if (currentCategory === 'gulf') {
+        return ['saudi', 'uae', 'qatar', 'kuwait', 'oman', 'bahrain'].includes(a.country);
+      }
+      if (['saudi', 'uae', 'qatar', 'kuwait', 'oman', 'bahrain'].includes(currentCategory as string)) {
+        return a.country === currentCategory;
+      }
 
       // Tech & AI grouping
       if (currentCategory === 'tech') return a.category === 'tech' || a.category === 'ai';
@@ -386,6 +411,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </div>
                 </div>
 
+                {/* Gulf News Sidebar Widget (دول الخليج العربي - أخبار رائجة) */}
+                <GulfNewsSection 
+                  articles={articles} 
+                  onOpenArticle={onOpenArticle} 
+                  variant="sidebar" 
+                />
+
                 {/* Sidebar AdSense Placement */}
                 <AdSenseBanner slot="sidebar" />
               </div>
@@ -446,6 +478,13 @@ export const HomePage: React.FC<HomePageProps> = ({
               ))}
             </div>
           </section>
+
+          {/* Section: أخبار دول الخليج العربي الرائجة (12 مقالاً رائجاً - 2 لكل دولة خليجية) */}
+          <GulfNewsSection 
+            articles={articles} 
+            onOpenArticle={onOpenArticle} 
+            variant="full" 
+          />
 
           {/* 4. Between-Sections Billboard AdSense */}
           <AdSenseBanner slot="between-sections" />

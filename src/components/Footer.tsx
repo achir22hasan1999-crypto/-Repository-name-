@@ -14,7 +14,7 @@ import {
   Sliders
 } from 'lucide-react';
 import { Category, Country, ViewMode } from '../types';
-import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
+import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } from '../data/initialArticles';
 
 interface FooterProps {
   onSelectCategory: (cat: Category) => void;
@@ -163,7 +163,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Row 2: Navigation Links Grid (Countries, Categories, Legal) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-b border-stone-800 text-xs">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-8 border-b border-stone-800 text-xs">
           {/* Col 1: Maghreb Countries */}
           <div>
             <h5 className="font-bold text-white text-sm mb-3 font-['Cairo']">
@@ -181,6 +181,30 @@ export const Footer: React.FC<FooterProps> = ({
                   >
                     <span>{c.flag}</span>
                     <span>أخبار {c.name}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 2: Gulf Countries */}
+          <div>
+            <h5 className="font-bold text-white text-sm mb-3 font-['Cairo'] flex items-center gap-1.5">
+              <span>🌴</span>
+              <span>دول الخليج العربي</span>
+            </h5>
+            <ul className="space-y-2">
+              {GULF_COUNTRIES.map((c) => (
+                <li key={c.id}>
+                  <button
+                    onClick={() => {
+                      onSelectCountry(c.id as Country);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="hover:text-amber-400 transition flex items-center gap-1.5"
+                  >
+                    <span>{c.flag}</span>
+                    <span>أخبار {c.shortName}</span>
                   </button>
                 </li>
               ))}
