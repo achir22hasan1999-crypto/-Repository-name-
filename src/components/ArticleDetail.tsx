@@ -26,7 +26,7 @@ import {
   AlertCircle,
   FileCheck
 } from 'lucide-react';
-import { Article, Comment, ViewMode } from '../types';
+import { Article, Comment, ViewMode, Category } from '../types';
 import { AdSenseBanner } from './AdSenseBanner';
 import { ArticleCard } from './ArticleCard';
 import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
@@ -41,6 +41,7 @@ interface ArticleDetailProps {
   onBack: () => void;
   onNavigate?: (view: ViewMode) => void;
   onEnterReaderMode?: () => void;
+  onSelectCategory?: (cat: Category) => void;
 }
 
 export const ArticleDetail: React.FC<ArticleDetailProps> = ({
@@ -53,6 +54,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
   onBack,
   onNavigate,
   onEnterReaderMode,
+  onSelectCategory,
 }) => {
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -250,9 +252,15 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
           الرئيسية
         </button>
         <ChevronRight className="w-3.5 h-3.5 rotate-180" />
-        <span className="font-semibold text-stone-700 dark:text-stone-300">
+        <button 
+          onClick={() => {
+            onSelectCategory?.(article.category as Category);
+            onBack();
+          }} 
+          className="font-semibold text-stone-700 dark:text-stone-300 hover:text-red-700 hover:underline transition"
+        >
           {getCategoryLabel(article.category)}
-        </span>
+        </button>
         <ChevronRight className="w-3.5 h-3.5 rotate-180" />
         <span className="truncate max-w-[200px] sm:max-w-md text-stone-400">
           {article.title}
@@ -261,9 +269,15 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
 
       {/* 2. Country, City & Category Badges */}
       <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-stone-600 dark:text-stone-300 mb-3">
-        <span className="text-red-700 dark:text-red-400 text-sm font-bold flex items-center gap-1">
+        <button
+          onClick={() => {
+            onSelectCategory?.(article.country as any);
+            onBack();
+          }}
+          className="text-red-700 dark:text-red-400 text-sm font-bold flex items-center gap-1 hover:underline transition"
+        >
           {getCountryName(article.country)}
-        </span>
+        </button>
         {article.city && (
           <>
             <span aria-hidden="true">·</span>

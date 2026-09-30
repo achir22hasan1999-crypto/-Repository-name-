@@ -8,10 +8,13 @@ import {
   Eye, 
   Compass, 
   Filter,
-  CheckCircle,
+  CheckCircle, 
   Share2,
-  Home,
-  FolderOpen
+  FolderOpen,
+  ArrowRight,
+  UtensilsCrossed,
+  Layers,
+  Newspaper
 } from 'lucide-react';
 import { Article, Category, Country } from '../types';
 import { ArticleCard } from './ArticleCard';
@@ -39,14 +42,99 @@ export const HomePage: React.FC<HomePageProps> = ({
   onSelectCountry,
 }) => {
   const [countryFilterTab, setCountryFilterTab] = useState<Country>('all');
+  const [recipeSubfilter, setRecipeSubfilter] = useState<string>('all');
+  const [sortOrder, setSortOrder] = useState<'latest' | 'popular'>('latest');
 
-  // Category & Country metadata lookup
-  const categoryConfig = CATEGORIES_CONFIG.find((c) => c.id === currentCategory);
-  const countryConfig = MAGHREB_COUNTRIES.find((m) => m.id === (currentCategory as any));
-  const categoryTitle = categoryConfig?.label || (countryConfig ? `أخبار ${countryConfig.name}` : currentCategory);
-  const categoryFlag = categoryConfig?.flag || countryConfig?.flag;
+  // Helper for category metadata & descriptions
+  const getCategoryMeta = (cat: Category) => {
+    const country = MAGHREB_COUNTRIES.find((c) => c.id === cat);
+    if (country) {
+      return {
+        title: `أخبار ${country.name}`,
+        flag: country.flag,
+        description: `متابعة حية وشاملة ومستمرة لأحدث الأخبار والتطورات السياسية والاقتصادية والاجتماعية في ${country.name}.`,
+        badge: country.capital ? `العاصمة: ${country.capital} · العملة: ${country.currency}` : undefined,
+      };
+    }
 
-  // Filter articles based on search, category, and country
+    switch (cat) {
+      case 'morocco':
+        return {
+          title: 'أخبار المملكة المغربية',
+          flag: '🇲🇦',
+          description: 'تغطية إخبارية حصرية للمشاريع التنموية الكبرى، البنية التحتية، الدبلوماسية، والاقتصاد الوطني.',
+        };
+      case 'world':
+        return {
+          title: 'أخبار العالم',
+          flag: '🌍',
+          description: 'تغطيات جيوسياسية استقصائية وتحليلات لأبرز الملفات الدولية في إفريقيا وأوروبا والشرق الأوسط والعالم.',
+        };
+      case 'economy':
+        return {
+          title: 'اقتصاد وأعمال المغرب العربي',
+          icon: '📈',
+          description: 'تحليلات أسواق المال، مشاريع الطاقة النظيفة، التجارة المغاربية المشتركة، والفرص الاستثمارية الواعدة.',
+        };
+      case 'cooking':
+        return {
+          title: 'مطبخ ووصفات المغرب العربي والعالم',
+          icon: '🍲',
+          description: 'موسوعة غنية من أشهى أطباق الطهي المغربي التقليدي (الكسكس، الطواجن، البسطيلة)، مع وصفات عربية وعالمية بمقادير دقيقة وخطوات واضحة.',
+        };
+      case 'ai':
+        return {
+          title: 'الذكاء الاصطناعي والثورة الرقمية',
+          icon: '🤖',
+          description: 'مستجدات نماذج الذكاء الاصطناعي التوليدي، معالجة اللغات، وتحولات سوق العمل والابتكارات الرقمية.',
+        };
+      case 'tech':
+        return {
+          title: 'تكنولوجيا وابتكار',
+          icon: '💻',
+          description: 'جديد الهواتف، الأجهزة الذكية، الحوسبة السحابية، الأمن السيبراني، ومنظومة الشركات الناشئة المغاربية.',
+        };
+      case 'sports':
+        return {
+          title: 'رياضة مغاربية وعالمية',
+          icon: '🏆',
+          description: 'أخبار بطولات كرة القدم، تصفيات كأس العالم 2030، الكؤوس الإفريقية، ونتائج المحترفين في كبرى الدوريات العالمية.',
+        };
+      case 'video':
+        return {
+          title: 'فيديو ووثائقيات',
+          icon: '🎬',
+          description: 'تقارير مصورة، وثائقيات حصرية، وتغطيات ميدانية تجسد نبض الشارع المغاربي بالصوت والصورة.',
+        };
+      case 'society':
+        return {
+          title: 'شؤون المجتمع والتعليم',
+          icon: '👥',
+          description: 'قضايا التعليم العالي، الصحة، الأسرة، الشباب، والتنمية البشرية في بلدان المغرب العربي.',
+        };
+      case 'culture':
+        return {
+          title: 'ثقافة وتراث وفنون',
+          icon: '📚',
+          description: 'الذاكرة المغاربية المشتركة، معارض الفنون، المهرجانات، والإصدارات الأدبية والفكرية.',
+        };
+      case 'variety':
+        return {
+          title: 'منوعات وإضاءات',
+          icon: '✨',
+          description: 'قصص نجاح ملهمة، غرائب العلوم والطبيعة، وأسرار الوجهات السياحية المغاربية الاستثنائية.',
+        };
+      default:
+        const conf = CATEGORIES_CONFIG.find((c) => c.id === cat);
+        return {
+          title: conf?.label || 'أخبار',
+          flag: conf?.flag,
+          description: 'تغطية إخبارية شاملة وموثوقة لحظة بلحظة.',
+        };
+    }
+  };
+
+  // 1. Filter articles based on search, category, and country
   let filtered = [...articles];
 
   if (searchQuery.trim()) {
@@ -55,44 +143,53 @@ export const HomePage: React.FC<HomePageProps> = ({
       (a) =>
         a.title.toLowerCase().includes(q) ||
         a.summary.toLowerCase().includes(q) ||
-        a.tags.some((t) => t.toLowerCase().includes(q)) ||
+        a.tags?.some((t) => t.toLowerCase().includes(q)) ||
         a.author.name.toLowerCase().includes(q)
     );
   } else if (currentCategory !== 'all') {
     filtered = filtered.filter((a) => {
-      // 1. Direct category match
-      if (a.category === currentCategory) return true;
-      // 2. Tech includes AI
-      if (currentCategory === 'tech' && a.category === 'ai') return true;
-      // 3. Country match
-      if (a.country === (currentCategory as any)) return true;
-      // 4. Moroccan news includes all Moroccan tags and country
-      if (currentCategory === 'morocco' && (a.country === 'morocco' || a.tags.some((t) => t.includes('المغرب')))) return true;
-      // 5. World news includes world country or world tag
-      if (currentCategory === 'world' && (a.country === 'world' || a.tags.some((t) => t.includes('العالم') || t.includes('دولي')))) return true;
-      // 6. Cooking and recipes
-      if (currentCategory === 'cooking' && (a.contentType === 'recipe' || a.category === 'cooking' || a.tags.some((t) => t.includes('طبخ') || t.includes('مطبخ') || t.includes('وصفة')))) return true;
-      // 7. Artificial Intelligence
-      if (currentCategory === 'ai' && (a.category === 'ai' || a.tags.some((t) => t.includes('ذكاء اصطناعي') || t.toLowerCase().includes('ai')))) return true;
-      // 8. Video section
-      if (currentCategory === 'video' && (!!a.videoUrl || a.category === 'video')) return true;
-      // 9. Economy
-      if (currentCategory === 'economy' && (a.category === 'economy' || a.tags.some((t) => t.includes('اقتصاد')))) return true;
-      // 10. Sports
-      if (currentCategory === 'sports' && (a.category === 'sports' || a.tags.some((t) => t.includes('رياضة')))) return true;
-      // 11. Culture
-      if (currentCategory === 'culture' && (a.category === 'culture' || a.tags.some((t) => t.includes('ثقافة') || t.includes('تراث')))) return true;
-      // 12. Society
-      if (currentCategory === 'society' && (a.category === 'society' || a.tags.some((t) => t.includes('مجتمع')))) return true;
-      return false;
+      // Country matches
+      if (currentCategory === 'morocco') return a.country === 'morocco' || a.category === 'morocco';
+      if (currentCategory === 'algeria') return a.country === 'algeria' || a.category === 'algeria';
+      if (currentCategory === 'tunisia') return a.country === 'tunisia' || a.category === 'tunisia';
+      if (currentCategory === 'libya') return a.country === 'libya' || a.category === 'libya';
+      if (currentCategory === 'mauritania') return a.country === 'mauritania' || a.category === 'mauritania';
+      if (currentCategory === 'world') return a.country === 'world' || a.category === 'world';
+
+      // Tech & AI grouping
+      if (currentCategory === 'tech') return a.category === 'tech' || a.category === 'ai';
+      if (currentCategory === 'ai') return a.category === 'ai' || (a.category === 'tech' && a.tags?.some(t => t.includes('ذكاء')));
+
+      // Cooking matches all recipes and cooking articles
+      if (currentCategory === 'cooking') return a.category === 'cooking' || a.contentType === 'recipe';
+
+      // Standard match
+      return a.category === currentCategory;
     });
+
+    // Subfilter for cooking if active
+    if (currentCategory === 'cooking' && recipeSubfilter !== 'all') {
+      filtered = filtered.filter((a) => {
+        if (!a.recipeData) return false;
+        return a.recipeData.category.includes(recipeSubfilter) || a.title.includes(recipeSubfilter);
+      });
+    }
+  }
+
+  // Sort filtered articles
+  if (sortOrder === 'popular') {
+    filtered.sort((a, b) => (b.readsCount || 0) - (a.readsCount || 0));
+  } else {
+    filtered.sort(
+      (a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+    );
   }
 
   // Active country tab filter on homepage
   const countryArticles = (c: Country) =>
     articles.filter((a) => a.country === c);
 
-  // Sorting
+  // Sorting for Homepage
   const leadArticle = articles.find((a) => a.isLead) || articles[0];
   const breakingNews = articles.filter((a) => a.isBreaking);
   const mostReadArticles = [...articles].sort((a, b) => b.readsCount - a.readsCount).slice(0, 5);
@@ -104,31 +201,129 @@ export const HomePage: React.FC<HomePageProps> = ({
   const economyArticles = articles.filter((a) => a.category === 'economy');
   const sportsArticles = articles.filter((a) => a.category === 'sports');
   const techArticles = articles.filter((a) => a.category === 'tech' || a.category === 'ai');
-  const cookingArticles = articles.filter((a) => a.category === 'cooking');
-  const aiArticles = articles.filter((a) => a.category === 'ai');
+  const cookingArticles = articles.filter((a) => a.category === 'cooking' || a.contentType === 'recipe');
+  const moroccoArticles = articles.filter((a) => a.country === 'morocco');
+
+  const isBrowsingCategory = currentCategory !== 'all';
+  const isSearching = searchQuery.trim().length > 0;
+  const activeMeta = getCategoryMeta(currentCategory);
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 font-['Tajawal']">
       {/* 1. Top Google AdSense Leaderboard Banner */}
       <AdSenseBanner slot="top-leaderboard" />
 
-      {/* Case A: If search query is active, show Search Results view */}
-      {searchQuery.trim() ? (
-        <section className="my-8">
-          <div className="flex items-center justify-between mb-6 pb-2 border-b border-stone-200 dark:border-stone-800">
-            <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white font-['Cairo']">
-              نتائج البحث عن: <span className="text-red-700">"{searchQuery}"</span>
-            </h2>
-            <span className="text-xs text-stone-500 font-mono">
-              ({filtered.length} نتيجة)
+      {/* ========================================================================= */}
+      {/* VIEW A: Search Results OR Category Filter Page                            */}
+      {/* ========================================================================= */}
+      {(isSearching || isBrowsingCategory) ? (
+        <section className="my-6">
+          {/* Breadcrumb Navigation */}
+          <nav aria-label="مسار التصفح" className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400 mb-4">
+            <button
+              onClick={() => onSelectCategory('all')}
+              className="hover:text-red-700 hover:underline font-medium transition"
+            >
+              الصفحة الرئيسية
+            </button>
+            <ChevronLeft className="w-3.5 h-3.5 rotate-180" />
+            <span className="font-bold text-stone-800 dark:text-stone-200">
+              {isSearching ? `نتائج البحث عن: "${searchQuery}"` : activeMeta.title}
             </span>
+          </nav>
+
+          {/* Section Header Card */}
+          <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-5 sm:p-6 mb-8 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2.5 mb-1.5">
+                  {activeMeta.flag && <span className="text-2xl">{activeMeta.flag}</span>}
+                  {activeMeta.icon && <span className="text-2xl">{activeMeta.icon}</span>}
+                  <h1 className="text-2xl sm:text-3xl font-black text-stone-900 dark:text-white font-['Cairo'] tracking-tight">
+                    {isSearching ? `نتائج البحث عن: "${searchQuery}"` : activeMeta.title}
+                  </h1>
+                </div>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-2xl leading-relaxed">
+                  {isSearching
+                    ? `عرض جميع المقالات والتقارير والوصفات التي تحتوي على الكلمة المفتاحية.`
+                    : activeMeta.description}
+                </p>
+                {activeMeta.badge && (
+                  <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                    <span>📍</span>
+                    <span>{activeMeta.badge}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Actions: Total Counter & Reset Button */}
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-mono text-xs font-bold border border-stone-200 dark:border-stone-700">
+                  {filtered.length} {filtered.length === 1 ? 'مقال' : 'مقالات منشورة'}
+                </span>
+                <button
+                  onClick={() => onSelectCategory('all')}
+                  className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-700 hover:bg-red-800 text-white transition flex items-center gap-1 shadow-xs"
+                >
+                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>الرئيسية</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Sub-Filter Tabs for Cooking/Recipes */}
+            {currentCategory === 'cooking' && (
+              <div className="mt-5 pt-4 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold text-stone-500 dark:text-stone-400 ml-1">تصفية الوصفات:</span>
+                {[
+                  { id: 'all', label: 'جميع الوصفات' },
+                  { id: 'طواجن', label: 'طواجن مغربية' },
+                  { id: 'رئيسية', label: 'أطباق رئيسية فاخرة' },
+                  { id: 'شوربات', label: 'شوربات وحساء' },
+                  { id: 'مقبلات', label: 'مقبلات وسلطات' },
+                  { id: 'عالمية', label: 'أطباق عالمية وإيطالية' },
+                  { id: 'حلويات', label: 'حلويات ومشروبات' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setRecipeSubfilter(tab.id)}
+                    className={`px-3 py-1 text-xs font-bold rounded-full transition ${
+                      recipeSubfilter === tab.id
+                        ? 'bg-red-700 text-white shadow-xs'
+                        : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
+          {/* If Category is Video, include the video preview player */}
+          {currentCategory === 'video' && (
+            <div className="mb-10">
+              <VideoSection articles={articles} onOpenArticle={onOpenArticle} />
+            </div>
+          )}
+
+          {/* Articles Grid */}
           {filtered.length === 0 ? (
-            <div className="p-12 text-center bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-800">
-              <p className="text-stone-500 text-sm">
-                لم نتمكن من العثور على مقالات مطابقة لبحثك. جرب استخدام كلمات عامة مثل "المغرب"، "طاقة"، أو "اقتصاد".
+            <div className="p-12 text-center bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800 space-y-4">
+              <FolderOpen className="w-12 h-12 text-stone-400 mx-auto stroke-[1.5]" />
+              <h3 className="text-lg font-bold text-stone-800 dark:text-stone-200 font-['Cairo']">
+                لا توجد مقالات متوفرة حالياً في هذا القسم
+              </h3>
+              <p className="text-stone-500 dark:text-stone-400 text-xs sm:text-sm max-w-md mx-auto">
+                يقوم فريق التحرير بإعداد ونشر المزيد من التقارير الحصرية في هذا القسم قريباً.
               </p>
+              <button
+                onClick={() => onSelectCategory('all')}
+                className="mt-2 px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold transition inline-flex items-center gap-1.5"
+              >
+                <span>العودة لكافة الأخبار في الرئيسية</span>
+                <ChevronLeft className="w-4 h-4" />
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -142,123 +337,16 @@ export const HomePage: React.FC<HomePageProps> = ({
               ))}
             </div>
           )}
-        </section>
-      ) : currentCategory !== 'all' ? (
-        /* Case B: Specific Category / Section View */
-        <section className="my-6">
-          {/* Breadcrumbs & Back Navigation */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-3 border-b border-stone-200 dark:border-stone-800">
-            <nav className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
-              <button 
-                onClick={() => onSelectCategory('all')}
-                className="hover:text-red-700 dark:hover:text-red-400 flex items-center gap-1 font-bold text-stone-700 dark:text-stone-300 transition"
-              >
-                <Home className="w-3.5 h-3.5" />
-                <span>الرئيسية</span>
-              </button>
-              <span className="text-stone-400">/</span>
-              <span className="font-bold text-red-700 dark:text-red-400 flex items-center gap-1">
-                {categoryFlag && <span>{categoryFlag}</span>}
-                <span>{categoryTitle}</span>
-              </span>
-            </nav>
 
-            <button
-              onClick={() => onSelectCategory('all')}
-              className="text-xs px-3.5 py-1.5 rounded-md bg-stone-100 dark:bg-stone-800 hover:bg-red-700 hover:text-white dark:hover:bg-red-700 dark:hover:text-white text-stone-700 dark:text-stone-300 font-bold transition flex items-center gap-1.5 shadow-xs"
-            >
-              <ChevronLeft className="w-3.5 h-3.5 rotate-180" />
-              <span>العودة للرئيسية (كل الأخبار)</span>
-            </button>
+          {/* AdSense Placement */}
+          <div className="mt-12">
+            <AdSenseBanner slot="between-sections" />
           </div>
-
-          {/* Category Banner Title Card */}
-          <div className="bg-stone-900 text-white rounded-xl p-6 sm:p-8 mb-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-r-4 border-red-700">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-700 text-xs font-bold text-white shadow-xs">
-                <FolderOpen className="w-3.5 h-3.5" />
-                <span>تغطية إخبارية حصرية</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-black font-['Cairo'] flex items-center gap-2.5">
-                {categoryFlag && <span className="text-3xl">{categoryFlag}</span>}
-                <span>{categoryTitle}</span>
-              </h1>
-              <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
-                متابعة دقيقة وشاملة لأحدث المقالات، التحليلات والتقارير الميدانية الخاصة بـ {categoryTitle}.
-              </p>
-            </div>
-            <div className="shrink-0 bg-stone-800/90 border border-stone-700 px-5 py-3 rounded-lg text-center">
-              <span className="block text-3xl font-black text-amber-400 font-mono">{filtered.length}</span>
-              <span className="text-xs text-stone-300 font-medium">مقالاً متوفراً</span>
-            </div>
-          </div>
-
-          {/* Quick Categories Bar */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-8">
-            <span className="text-xs text-stone-400 font-bold shrink-0 ml-1">تصفح الأقسام:</span>
-            {CATEGORIES_CONFIG.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => onSelectCategory(cat.id as Category)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold shrink-0 transition flex items-center gap-1.5 ${
-                  currentCategory === cat.id
-                    ? 'bg-red-700 text-white shadow-xs'
-                    : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
-                }`}
-              >
-                {cat.flag && <span>{cat.flag}</span>}
-                <span>{cat.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Articles Render */}
-          {filtered.length === 0 ? (
-            <div className="p-12 text-center bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800">
-              <p className="text-stone-500 text-sm mb-4">
-                لا توجد مقالات متوفرة حالياً في هذا القسم. يواصل فريق التحرير إضافة تقارير جديدة بانتظام.
-              </p>
-              <button
-                onClick={() => onSelectCategory('all')}
-                className="px-5 py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold transition shadow"
-              >
-                العودة للصفحة الرئيسية
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {/* Featured article if available */}
-              {filtered.length > 0 && (
-                <div>
-                  <ArticleCard
-                    article={filtered[0]}
-                    variant="lead"
-                    onOpen={onOpenArticle}
-                  />
-                </div>
-              )}
-
-              {/* In-feed AdSense Banner */}
-              <AdSenseBanner slot="between-sections" />
-
-              {/* Grid of remaining articles */}
-              {filtered.length > 1 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filtered.slice(1).map((item) => (
-                    <ArticleCard
-                      key={item.id}
-                      article={item}
-                      variant="standard"
-                      onOpen={onOpenArticle}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </section>
       ) : (
-        /* Case C: Full Default Homepage */
+        /* ========================================================================= */
+        /* VIEW B: Rich Magazine Homepage (When currentCategory === 'all')          */
+        /* ========================================================================= */
         <>
           {/* 2. Top Hero Section: Dominant Lead Story + 2 Side Features + Breaking Rail */}
           <section className="mb-10">
@@ -416,8 +504,38 @@ export const HomePage: React.FC<HomePageProps> = ({
           {/* 6. Video Hub Section (قسم الفيديو والوثائقيات) */}
           <VideoSection articles={articles} onOpenArticle={onOpenArticle} />
 
-          {/* 7. Department Blocks: اقتصاد وأعمال + رياضة + تكنولوجيا */}
+          {/* 7. Department Blocks: اقتصاد وأعمال + رياضة + تكنولوجيا + طبخ */}
           <section className="my-14 space-y-12">
+            {/* Morocco Block */}
+            <div>
+              <div className="flex items-center justify-between pb-2 mb-6 border-b border-stone-200 dark:border-stone-800">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-6 bg-red-700 rounded-xs"></span>
+                  <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo']">
+                    أخبار المغرب 🇲🇦
+                  </h3>
+                </div>
+                <button
+                  onClick={() => onSelectCategory('morocco')}
+                  className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
+                >
+                  <span>عرض المزيد ({moroccoArticles.length})</span>
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {(moroccoArticles.length > 0 ? moroccoArticles : articles.slice(0, 3)).slice(0, 3).map((item) => (
+                  <ArticleCard
+                    key={item.id}
+                    article={item}
+                    variant="standard"
+                    onOpen={onOpenArticle}
+                  />
+                ))}
+              </div>
+            </div>
+
             {/* Economy Block */}
             <div>
               <div className="flex items-center justify-between pb-2 mb-6 border-b border-stone-200 dark:border-stone-800">
@@ -431,7 +549,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   onClick={() => onSelectCategory('economy')}
                   className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
                 >
-                  <span>عرض المزيد</span>
+                  <span>عرض المزيد ({economyArticles.length})</span>
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -461,7 +579,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   onClick={() => onSelectCategory('sports')}
                   className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
                 >
-                  <span>عرض المزيد</span>
+                  <span>عرض المزيد ({sportsArticles.length})</span>
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -484,14 +602,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-6 bg-red-700 rounded-xs"></span>
                   <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo']">
-                    مطبخ ووصفات المغرب العربي والعالم
+                    مطبخ ووصفات المغرب العربي والعالم 🍲
                   </h3>
                 </div>
                 <button
                   onClick={() => onSelectCategory('cooking')}
                   className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
                 >
-                  <span>عرض جميع الوصفات</span>
+                  <span>عرض جميع الوصفات ({cookingArticles.length})</span>
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -514,14 +632,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-6 bg-blue-600 rounded-xs"></span>
                   <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo']">
-                    الذكاء الاصطناعي والتكنولوجيا المتقدمة
+                    الذكاء الاصطناعي والتكنولوجيا المتقدمة 🤖
                   </h3>
                 </div>
                 <button
                   onClick={() => onSelectCategory('ai')}
                   className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
                 >
-                  <span>عرض المزيد</span>
+                  <span>عرض المزيد ({techArticles.length})</span>
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
               </div>

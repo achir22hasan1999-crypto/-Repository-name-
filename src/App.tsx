@@ -21,7 +21,7 @@ export default function App() {
   // 1. Persistent State
   const [articles, setArticles] = useState<Article[]>(() => {
     try {
-      const saved = localStorage.getItem('maghreb_news_articles_v5');
+      const saved = localStorage.getItem('maghreb_news_articles');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length >= INITIAL_ARTICLES.length) {
@@ -92,7 +92,7 @@ export default function App() {
   // Sync articles to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('maghreb_news_articles_v5', JSON.stringify(articles));
+      localStorage.setItem('maghreb_news_articles', JSON.stringify(articles));
     } catch (e) {
       console.error(e);
     }
@@ -165,7 +165,6 @@ export default function App() {
 
   const handleSelectCategory = (cat: Category) => {
     setIsReaderMode(false);
-    setActiveArticleId(null);
     setCurrentCategory(cat);
     setSearchQuery('');
     if (view !== 'home') setView('home');
@@ -174,7 +173,6 @@ export default function App() {
 
   const handleSelectCountry = (country: Country) => {
     setIsReaderMode(false);
-    setActiveArticleId(null);
     setSelectedCountry(country);
     setCurrentCategory(country as any);
     setSearchQuery('');
@@ -380,6 +378,7 @@ export default function App() {
             onLikeComment={handleLikeComment}
             onOpenArticle={handleOpenArticle}
             onBack={() => setView('home')}
+            onSelectCategory={handleSelectCategory}
             onNavigate={(newView) => {
               setView(newView);
               window.scrollTo({ top: 0, behavior: 'smooth' });
