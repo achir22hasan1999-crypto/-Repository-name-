@@ -13,6 +13,9 @@ export type Category =
   | 'sports'
   | 'tech'
   | 'society'
+  | 'culture'
+  | 'cooking'
+  | 'ai'
   | 'video'
   | 'variety';
 
@@ -20,6 +23,7 @@ export interface Author {
   name: string;
   role: string;
   avatar: string;
+  bio?: string;
 }
 
 export interface SEOData {
@@ -27,6 +31,23 @@ export interface SEOData {
   metaDescription: string;
   keywords: string[];
   canonicalUrl?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+}
+
+export interface RecipeData {
+  prepTime: string;
+  cookTime: string;
+  totalTime: string;
+  servings: string;
+  calories?: string;
+  ingredients: string[];
+  instructions: string[];
+  category: string;
+  chefTips?: string;
+  isoPrepTime?: string;
+  isoCookTime?: string;
+  isoTotalTime?: string;
 }
 
 export interface Article {
@@ -37,22 +58,31 @@ export interface Article {
   content: string;
   leadImage: string;
   imageCaption?: string;
+  altText?: string;
   country: Country;
   category: Category;
+  contentType?: 'news' | 'article' | 'recipe';
+  recipeData?: RecipeData;
+  city?: string;
   isBreaking: boolean;
   isLead?: boolean;
   publishDate: string;
+  updatedDate?: string;
   scheduledFor?: string;
   author: Author;
   source: string;
   sourceUrl?: string;
+  sourceDate?: string;
+  facts?: string[];
   tags: string[];
+  focusKeyword?: string;
   readsCount: number;
   likesCount: number;
   commentsCount: number;
   videoUrl?: string;
   videoDuration?: string;
   audioLengthMinutes?: number;
+  wordCount?: number;
   seo: SEOData;
 }
 
@@ -92,4 +122,8 @@ export type ViewMode =
   | 'cookies'
   | 'terms'
   | 'disclaimer'
+  | 'corrections'
+  | 'copyright'
+  | 'author'
   | 'seo-tools';
+

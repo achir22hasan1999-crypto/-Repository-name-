@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Clock, 
   Eye, 
@@ -13,11 +13,20 @@ import {
   ChevronRight, 
   Send, 
   Bookmark,
-  ExternalLink,
-  ShieldAlert,
-  BookOpen
+  BookOpen,
+
+  Utensils,
+  ChefHat,
+  ListChecks,
+  Flame,
+  Sparkles,
+  MapPin,
+  CalendarDays,
+  CheckCircle2,
+  AlertCircle,
+  FileCheck
 } from 'lucide-react';
-import { Article, Comment } from '../types';
+import { Article, Comment, ViewMode } from '../types';
 import { AdSenseBanner } from './AdSenseBanner';
 import { ArticleCard } from './ArticleCard';
 import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
@@ -30,6 +39,7 @@ interface ArticleDetailProps {
   onLikeComment: (commentId: string) => void;
   onOpenArticle: (id: string) => void;
   onBack: () => void;
+  onNavigate?: (view: ViewMode) => void;
   onEnterReaderMode?: () => void;
 }
 
@@ -41,6 +51,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
   onLikeComment,
   onOpenArticle,
   onBack,
+  onNavigate,
   onEnterReaderMode,
 }) => {
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
@@ -48,6 +59,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
   const [copiedLink, setCopiedLink] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(article.likesCount);
+  const [checkedIngredients, setCheckedIngredients] = useState<Record<number, boolean>>({});
 
   // Comment form state
   const [newCommentName, setNewCommentName] = useState('');
@@ -55,9 +67,118 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
   const [newCommentContent, setNewCommentContent] = useState('');
   const [commentSuccess, setCommentSuccess] = useState(false);
 
+  // Dynamic SEO and Schema.org Injection
+  useEffect(() => {
+    // 1. Update Title
+    const originalTitle = document.title;
+    document.title = `${article.seo.metaTitle || article.title} | المغرب العربي اليوم`;
+
+    // 2. Update Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    const originalDesc = metaDesc.getAttribute('content') || '';
+    metaDesc.setAttribute('content', article.seo.metaDescription || article.summary);
+
+    // 3. Inject Schema.org JSON-LD
+    const scriptId = 'dynamic-article-schema';
+    let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.id = scriptId;
+      scriptTag.type = 'application/ld+json';
+      document.head.appendChild(scriptTag);
+    }
+
+    if (article.contentType === 'recipe' && article.recipeData) {
+      const recipeSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Recipe',
+        'name': article.title,
+        'image': [article.leadImage],
+        'description': article.summary,
+        'keywords': article.tags.join(', '),
+        'author': {
+          '@type': 'Person',
+          'name': article.author.name
+        },
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'المغرب العربي اليوم',
+          'url': 'https://almaghreb-alyoum.com'
+        },
+        'datePublished': article.publishDate,
+        'dateModified': article.updatedDate || article.publishDate,
+        'prepTime': article.recipeData.isoPrepTime || 'PT20M',
+        'cookTime': article.recipeData.isoCookTime || 'PT30M',
+        'totalTime': article.recipeData.isoTotalTime || 'PT50M',
+        'recipeYield': article.recipeData.servings,
+        'recipeCategory': article.recipeData.category,
+        'nutrition': article.recipeData.calories ? {
+          '@type': 'NutritionInformation',
+          'calories': article.recipeData.calories
+        } : undefined,
+        'recipeIngredient': article.recipeData.ingredients,
+        'recipeInstructions': article.recipeData.instructions.map((step, idx) => ({
+          '@type': 'HowToStep',
+          'name': `الخطوة ${idx + 1}`,
+          'text': step
+        }))
+      };
+      scriptTag.textContent = JSON.stringify(recipeSchema, null, 2);
+    } else {
+      const newsSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        'headline': article.title,
+        'image': [article.leadImage],
+        'description': article.summary,
+        'datePublished': article.publishDate,
+        'dateModified': article.updatedDate || article.publishDate,
+        'author': [{
+          '@type': 'Person',
+          'name': article.author.name,
+          'jobTitle': article.author.role
+        }],
+        'publisher': {
+          '@type': 'NewsMediaOrganization',
+          'name': 'المغرب العربي اليوم',
+          'url': 'https://almaghreb-alyoum.com',
+          'logo': {
+            '@type': 'ImageObject',
+            'url': 'https://almaghreb-alyoum.com/logo.png'
+          }
+        },
+        'mainEntityOfPage': {
+          '@type': 'WebPage',
+          '@id': `https://almaghreb-alyoum.com/article/${article.slug}`
+        }
+      };
+      scriptTag.textContent = JSON.stringify(newsSchema, null, 2);
+    }
+
+    return () => {
+      document.title = originalTitle;
+      if (metaDesc) metaDesc.setAttribute('content', originalDesc);
+      if (scriptTag && scriptTag.parentNode) {
+        scriptTag.parentNode.removeChild(scriptTag);
+      }
+    };
+  }, [article]);
+
+  const toggleIngredient = (idx: number) => {
+    setCheckedIngredients(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
+
   const getCountryName = (c: string) => {
     const match = MAGHREB_COUNTRIES.find((item) => item.id === c);
-    return match ? `${match.flag} ${match.name}` : 'المغرب العربي';
+    return match ? `${match.flag} ${match.name}` : (c === 'world' ? '🌍 العالم' : '🌍 المغرب العربي');
   };
 
   const getCategoryLabel = (cat: string) => {
@@ -65,7 +186,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
     return match ? match.label : cat;
   };
 
-  const formattedDate = new Intl.DateTimeFormat('ar-MA', {
+  const formattedPublishDate = new Intl.DateTimeFormat('ar-MA', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -73,6 +194,14 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
     hour: '2-digit',
     minute: '2-digit',
   }).format(new Date(article.publishDate));
+
+  const formattedUpdateDate = article.updatedDate ? new Intl.DateTimeFormat('ar-MA', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(article.updatedDate)) : null;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -114,9 +243,9 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
   const paragraphs = article.content.split('\n\n').filter(Boolean);
 
   return (
-    <article className="max-w-4xl mx-auto px-4 sm:px-6 py-6 font-['Tajawal']">
+    <article className="max-w-4xl mx-auto px-4 sm:px-6 py-6 font-['Tajawal']" itemScope itemType={article.contentType === 'recipe' ? 'https://schema.org/Recipe' : 'https://schema.org/NewsArticle'}>
       {/* 1. Breadcrumbs */}
-      <div className="flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 mb-4 no-print">
+      <nav aria-label="مسار التصفح" className="flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 mb-4 no-print flex-wrap">
         <button onClick={onBack} className="hover:text-red-700 hover:underline">
           الرئيسية
         </button>
@@ -128,22 +257,36 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         <span className="truncate max-w-[200px] sm:max-w-md text-stone-400">
           {article.title}
         </span>
-      </div>
+      </nav>
 
-      {/* 2. Country & Category Badges */}
-      <div className="flex items-center gap-2 text-xs font-semibold text-stone-600 dark:text-stone-300 mb-3">
-        <span className="text-red-700 dark:text-red-400 text-sm font-bold">
+      {/* 2. Country, City & Category Badges */}
+      <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-stone-600 dark:text-stone-300 mb-3">
+        <span className="text-red-700 dark:text-red-400 text-sm font-bold flex items-center gap-1">
           {getCountryName(article.country)}
         </span>
-        <span aria-hidden="true">·</span>
-        <span>{getCategoryLabel(article.category)}</span>
-        {article.isBreaking && (
+        {article.city && (
           <>
             <span aria-hidden="true">·</span>
-            <span className="bg-red-600 text-white px-2 py-0.5 rounded text-[11px] font-bold">
-              عاجل
+            <span className="flex items-center gap-1 text-stone-500 dark:text-stone-400">
+              <MapPin className="w-3 h-3 text-red-600" />
+              {article.city}
             </span>
           </>
+        )}
+        <span aria-hidden="true">·</span>
+        <span className="bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2 py-0.5 rounded">
+          {getCategoryLabel(article.category)}
+        </span>
+        {article.contentType === 'recipe' && (
+          <span className="bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded font-bold flex items-center gap-1 text-[11px]">
+            <Utensils className="w-3 h-3" />
+            وصفة موثقة
+          </span>
+        )}
+        {article.isBreaking && (
+          <span className="bg-red-600 text-white px-2 py-0.5 rounded text-[11px] font-bold animate-pulse">
+            عاجل
+          </span>
         )}
       </div>
 
@@ -164,13 +307,13 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         </div>
       )}
 
-      {/* 3. Main Headline */}
-      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-stone-950 dark:text-stone-50 leading-tight font-['Cairo'] mb-4" style={{ textWrap: 'balance' }}>
+      {/* 3. Main Headline (H1) */}
+      <h1 itemProp="headline" className="text-2xl sm:text-4xl lg:text-4.5xl font-black text-stone-950 dark:text-white leading-[1.3] font-['Cairo'] mb-4">
         {article.title}
       </h1>
 
       {/* 4. Deck / Subhead summary */}
-      <p className="text-base sm:text-xl text-stone-600 dark:text-stone-300 font-medium leading-relaxed mb-6 border-r-4 border-red-700 pr-4">
+      <p itemProp="description" className="text-base sm:text-xl text-stone-600 dark:text-stone-300 font-medium leading-relaxed mb-6 border-r-4 border-red-700 pr-4">
         {article.summary}
       </p>
 
@@ -183,28 +326,36 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
             className="w-11 h-11 rounded-full object-cover border border-stone-300 dark:border-stone-700 shadow-sm"
           />
           <div>
-            <div className="font-bold text-sm text-stone-900 dark:text-white">
-              {article.author.name}
+            <div className="font-bold text-sm text-stone-900 dark:text-white flex items-center gap-2">
+              <span itemProp="author">{article.author.name}</span>
             </div>
-            <div className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-2">
+            <div className="text-xs text-stone-500 dark:text-stone-400 flex flex-wrap items-center gap-2">
               <span>{article.author.role}</span>
               <span aria-hidden="true">·</span>
               <span className="flex items-center gap-1">
                 <Clock className="w-3 h-3" />
-                {formattedDate}
+                <span>نُشر: {formattedPublishDate}</span>
               </span>
+              {formattedUpdateDate && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span className="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1">
+                    <CalendarDays className="w-3 h-3" />
+                    <span>آخر تحديث: {formattedUpdateDate}</span>
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </div>
 
         {/* Action controls (Reader View, Font Size, Audio, Print) */}
         <div className="flex items-center gap-2 text-stone-600 dark:text-stone-300 no-print">
-          {/* Reader View button */}
           {onEnterReaderMode && (
             <button
               onClick={onEnterReaderMode}
               className="px-3 py-1.5 rounded-lg border border-stone-800 dark:border-stone-200 bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 hover:bg-red-700 dark:hover:bg-red-600 dark:hover:text-white transition flex items-center gap-1.5 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-[0.98]"
-              title="تفعيل وضع القارئ (تجربة هادئة بدون إعلانات أو مشتتات)"
+              title="تفعيل وضع القارئ"
             >
               <BookOpen className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
               <span>وضع القارئ</span>
@@ -224,12 +375,12 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
             {isPlayingAudio ? (
               <>
                 <VolumeX className="w-4 h-4 text-red-600 animate-pulse" />
-                <span className="hidden sm:inline font-bold">إيقاف الاستماع</span>
+                <span className="hidden sm:inline font-bold">إيقاف</span>
               </>
             ) : (
               <>
                 <Volume2 className="w-4 h-4" />
-                <span className="hidden sm:inline">استمع للمقال</span>
+                <span className="hidden sm:inline">استمع</span>
               </>
             )}
           </button>
@@ -270,35 +421,14 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         </div>
       </div>
 
-      {/* Audio Player Bar when activated */}
-      {isPlayingAudio && (
-        <div className="mb-6 p-3 bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 rounded-lg flex items-center justify-between gap-4 animate-fade-in no-print">
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-red-600 animate-ping"></div>
-            <div>
-              <span className="text-xs font-bold text-red-900 dark:text-red-200 block">
-                جاري القراءة الصوتية باللغة العربية الفصحى
-              </span>
-              <span className="text-[11px] text-red-700 dark:text-red-400">
-                القارئ الآلي الذكي لـ "المغرب العربي اليوم" · المدة المقدرة: {article.audioLengthMinutes || 3} دقائق
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsPlayingAudio(false)}
-            className="text-xs font-bold text-red-800 dark:text-red-300 hover:underline"
-          >
-            إغلاق
-          </button>
-        </div>
-      )}
-
-      {/* 6. Lead Feature Image with Caption & Attribution */}
-      <div className="mb-8 rounded-lg overflow-hidden border border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-stone-900">
+      {/* 6. Lead Featured Image */}
+      <div className="mb-6 rounded-xl overflow-hidden shadow-sm border border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-stone-900">
         <img
+          itemProp="image"
           src={article.leadImage}
-          alt={article.title}
+          alt={article.altText || article.title}
           className="w-full max-h-[500px] object-cover"
+          loading="lazy"
         />
         {article.imageCaption && (
           <div className="p-3 text-xs text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800 italic">
@@ -311,11 +441,10 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
       <div className="mb-8 p-3 bg-stone-100 dark:bg-stone-800/80 rounded-lg flex flex-wrap items-center justify-between gap-3 no-print">
         <div className="flex items-center gap-2 text-xs font-bold text-stone-700 dark:text-stone-300">
           <Share2 className="w-4 h-4 text-red-600" />
-          <span>شارك الخبر عبر:</span>
+          <span>مشاركة عبر:</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* WhatsApp */}
+        <div className="flex items-center gap-2 flex-wrap">
           <a
             href={shareWhatsApp}
             target="_blank"
@@ -325,7 +454,6 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
             <span>واتساب</span>
           </a>
 
-          {/* X / Twitter */}
           <a
             href={shareTwitter}
             target="_blank"
@@ -335,7 +463,6 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
             <span>X (تويتر)</span>
           </a>
 
-          {/* Facebook */}
           <a
             href={shareFacebook}
             target="_blank"
@@ -345,7 +472,6 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
             <span>فيسبوك</span>
           </a>
 
-          {/* Copy link */}
           <button
             onClick={handleCopyLink}
             className="px-3 py-1.5 border border-stone-300 dark:border-stone-600 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 rounded text-xs font-semibold flex items-center gap-1.5 transition"
@@ -365,7 +491,131 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         </div>
       </div>
 
-      {/* 8. Article Prose Body */}
+      {/* 8. Verified Facts Box (if available) */}
+      {article.facts && article.facts.length > 0 && (
+        <div className="mb-8 p-5 bg-stone-50 dark:bg-stone-900/90 rounded-xl border-r-4 border-emerald-600 border-stone-200 dark:border-stone-800 shadow-xs">
+          <h2 className="text-base font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+            <span>معطيات وحقائق أساسية موثقة:</span>
+          </h2>
+          <ul className="space-y-2 text-sm text-stone-700 dark:text-stone-300">
+            {article.facts.map((fact, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-2 shrink-0"></span>
+                <span>{fact}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* 9. Interactive Recipe Card (if recipeData available) */}
+      {article.recipeData && (
+        <div className="mb-10 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-5 sm:p-7 shadow-xs">
+          <div className="flex items-center justify-between pb-4 border-b border-amber-200 dark:border-amber-900/60 mb-6 flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <ChefHat className="w-6 h-6 text-amber-700 dark:text-amber-500" />
+              <h2 className="text-xl sm:text-2xl font-bold font-['Cairo'] text-stone-900 dark:text-white">
+                بطاقة المقادير وطريقة التحضير
+              </h2>
+            </div>
+            <span className="text-xs bg-amber-200/70 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-3 py-1 rounded-full font-bold">
+              {article.recipeData.category}
+            </span>
+          </div>
+
+          {/* Recipe Key Stats Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+            <div className="bg-white dark:bg-stone-900 p-3 rounded-xl border border-amber-200/60 dark:border-amber-900/30 text-center">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400 block mb-0.5">وقت التحضير</span>
+              <span className="font-bold text-sm text-stone-800 dark:text-stone-200">{article.recipeData.prepTime}</span>
+            </div>
+            <div className="bg-white dark:bg-stone-900 p-3 rounded-xl border border-amber-200/60 dark:border-amber-900/30 text-center">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400 block mb-0.5">وقت الطهي</span>
+              <span className="font-bold text-sm text-stone-800 dark:text-stone-200">{article.recipeData.cookTime}</span>
+            </div>
+            <div className="bg-white dark:bg-stone-900 p-3 rounded-xl border border-amber-200/60 dark:border-amber-900/30 text-center">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400 block mb-0.5">الكمية تكفي</span>
+              <span className="font-bold text-sm text-stone-800 dark:text-stone-200">{article.recipeData.servings}</span>
+            </div>
+            <div className="bg-white dark:bg-stone-900 p-3 rounded-xl border border-amber-200/60 dark:border-amber-900/30 text-center">
+              <span className="text-[11px] text-stone-500 dark:text-stone-400 block mb-0.5">السعرات التقديرية</span>
+              <span className="font-bold text-sm text-amber-700 dark:text-amber-400">{article.recipeData.calories || 'غير محددة'}</span>
+            </div>
+          </div>
+
+          {/* Interactive Ingredients Checklist */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-4">
+              <ListChecks className="w-5 h-5 text-amber-700" />
+              <span>المكونات والمقادير (اضغط للتحديد أثناء التحضير):</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              {article.recipeData.ingredients.map((ing, idx) => {
+                const isChecked = checkedIngredients[idx];
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => toggleIngredient(idx)}
+                    className={`flex items-start gap-3 p-3 rounded-xl border transition cursor-pointer select-none ${
+                      isChecked
+                        ? 'bg-amber-100/50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 line-through text-stone-400 dark:text-stone-500'
+                        : 'bg-white dark:bg-stone-900 border-amber-100 dark:border-stone-800 hover:border-amber-300 text-stone-800 dark:text-stone-200'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded border mt-0.5 flex items-center justify-center shrink-0 transition ${
+                      isChecked ? 'bg-amber-700 border-amber-700 text-white' : 'border-stone-300 dark:border-stone-700'
+                    }`}>
+                      {isChecked && <Check className="w-3.5 h-3.5" />}
+                    </div>
+                    <span className="text-sm font-medium leading-relaxed">{ing}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step by Step Cooking Method */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-4">
+              <Flame className="w-5 h-5 text-red-600" />
+              <span>طريقة الإعداد والطهي خطوة بخطوة:</span>
+            </h3>
+            <ol className="space-y-4">
+              {article.recipeData.instructions.map((step, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-start gap-3 bg-white dark:bg-stone-900 p-4 rounded-xl border border-stone-200/80 dark:border-stone-800"
+                >
+                  <span className="w-7 h-7 rounded-full bg-amber-700 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <p className="text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed">
+                    {step}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Chef Tips Box */}
+          {article.recipeData.chefTips && (
+            <div className="p-4 bg-amber-100/70 dark:bg-amber-950/60 rounded-xl border border-amber-300 dark:border-amber-800 flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-amber-700 dark:text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="block text-sm font-bold text-amber-900 dark:text-amber-200 mb-1">
+                  نصيحة الشيف لنجاح الوصفة:
+                </strong>
+                <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+                  {article.recipeData.chefTips}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 10. Article Prose Body */}
       <div
         className={`leading-relaxed space-y-6 text-stone-800 dark:text-stone-200 ${
           fontSize === 'large'
@@ -376,6 +626,22 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         }`}
       >
         {paragraphs.map((p, idx) => {
+          // If paragraph is a markdown heading
+          if (p.startsWith('## ')) {
+            return (
+              <h2 key={idx} className="text-xl sm:text-2xl font-black font-['Cairo'] text-stone-900 dark:text-white mt-8 mb-4 border-r-4 border-red-700 pr-3">
+                {p.replace('## ', '')}
+              </h2>
+            );
+          }
+          if (p.startsWith('### ')) {
+            return (
+              <h3 key={idx} className="text-lg sm:text-xl font-bold font-['Cairo'] text-stone-800 dark:text-stone-100 mt-6 mb-3">
+                {p.replace('### ', '')}
+              </h3>
+            );
+          }
+
           return (
             <React.Fragment key={idx}>
               <p
@@ -388,8 +654,8 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
                 {p}
               </p>
 
-              {/* In-article AdSense Banner inserted naturally after paragraph 2 */}
-              {idx === 1 && (
+              {/* In-article AdSense Banner naturally placed */}
+              {idx === 2 && (
                 <div className="no-print my-8">
                   <AdSenseBanner slot="in-article" />
                 </div>
@@ -399,35 +665,52 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         })}
       </div>
 
-      {/* 9. Source & Verification Attribution */}
-      <div className="mt-8 p-4 bg-stone-100 dark:bg-stone-800/60 rounded-lg border border-stone-200 dark:border-stone-700 text-xs text-stone-600 dark:text-stone-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      {/* 12. Editorial Accountability & Correction Banner */}
+      <div className="mt-4 p-3 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg flex items-center justify-between gap-3 text-xs text-stone-500 dark:text-stone-400">
         <div className="flex items-center gap-2">
-          <ShieldAlert className="w-4 h-4 text-stone-500" />
-          <span>
-            <strong>المصدر والاعتماد:</strong> {article.source}
-          </span>
+          <FileCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span>تلتزم صحيفتنا بأرقى معايير الدقة الصحفية والتحقق من الوقائع.</span>
         </div>
-        {article.sourceUrl && (
-          <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
+        {onNavigate && (
+          <button
+            onClick={() => onNavigate('corrections')}
+            className="text-red-700 dark:text-red-400 hover:underline font-bold shrink-0"
           >
-            <span>رابط المصدر المعتمد</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
+            الإبلاغ عن خطأ أو طلب تصحيح
+          </button>
         )}
       </div>
 
-      {/* 10. Tags / Keywords */}
+      {/* 13. Author Profile Card */}
+      <div className="mt-8 p-5 bg-stone-50 dark:bg-stone-900/60 rounded-xl border border-stone-200 dark:border-stone-800 flex items-start gap-4">
+        <img
+          src={article.author.avatar}
+          alt={article.author.name}
+          className="w-14 h-14 rounded-full object-cover border-2 border-stone-300 dark:border-stone-700 shrink-0"
+        />
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <h4 className="font-bold text-sm text-stone-950 dark:text-white">
+              {article.author.name}
+            </h4>
+            <span className="text-xs text-stone-500 dark:text-stone-400 bg-stone-200/60 dark:bg-stone-800 px-2 py-0.5 rounded">
+              {article.author.role}
+            </span>
+          </div>
+          <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            {article.author.bio || 'محرر صحفي ضمن الفريق التحريري لجريدة المغرب العربي اليوم، متخصص في التحقيقات والتقارير الميدانية الموثقة.'}
+          </p>
+        </div>
+      </div>
+
+      {/* 14. Tags / Keywords */}
       {article.tags && article.tags.length > 0 && (
         <div className="mt-6 flex flex-wrap items-center gap-2 text-xs">
           <span className="font-bold text-stone-400">الكلمات المفتاحية:</span>
           {article.tags.map((tag, i) => (
             <span
               key={i}
-              className="bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2.5 py-1 rounded hover:bg-stone-300 transition cursor-pointer"
+              className="bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2.5 py-1 rounded hover:bg-stone-300 transition"
             >
               #{tag}
             </span>
@@ -435,7 +718,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         </div>
       )}
 
-      {/* 11. Article Interaction Bar (Likes & Comments counter) */}
+      {/* 15. Article Interaction Bar (Likes & Comments counter) */}
       <div className="mt-8 py-4 border-y border-stone-200 dark:border-stone-800 flex items-center justify-between no-print">
         <button
           onClick={handleToggleLike}
@@ -449,38 +732,34 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
           <span>أعجبني ({likesCount})</span>
         </button>
 
-        <div className="flex items-center gap-2 text-sm text-stone-500">
-          <MessageSquare className="w-4 h-4" />
-          <span>{articleComments.length} تعليقات</span>
+        <div className="flex items-center gap-4 text-xs text-stone-500">
+          <span className="flex items-center gap-1">
+            <Eye className="w-4 h-4" />
+            <span>{article.readsCount.toLocaleString('ar-MA')} قراءة</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <MessageSquare className="w-4 h-4" />
+            <span>{articleComments.length} تعليق</span>
+          </span>
         </div>
       </div>
 
-      {/* 12. Bottom AdSense Banner */}
-      <div className="no-print my-8">
-        <AdSenseBanner slot="bottom-footer" />
-      </div>
-
-      {/* 13. Comments Section */}
+      {/* 16. Comments Section */}
       <section className="mt-10 no-print">
         <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo'] mb-4 flex items-center gap-2">
-          <span>آراء القراء والتعليقات</span>
-          <span className="text-xs bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2 py-0.5 rounded-full font-mono">
-            {articleComments.length}
-          </span>
+          <MessageSquare className="w-5 h-5 text-red-700" />
+          <span>التعليقات وآراء القراء ({articleComments.length})</span>
         </h3>
 
-        {/* Comment Input Form */}
+        {/* Comment Submission Form */}
         <form
           onSubmit={handleCommentSubmit}
-          className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-4 sm:p-6 mb-8 shadow-xs"
+          className="mb-8 p-4 bg-stone-100 dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-800"
         >
-          <h4 className="text-sm font-bold text-stone-800 dark:text-stone-200 mb-3">
-            أضف تعليقك على هذا الخبر (تخضع التعليقات لميثاق الشرف الصحفي)
-          </h4>
-
           {commentSuccess && (
-            <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 text-emerald-800 dark:text-emerald-200 text-xs rounded-md">
-              شكراً لمشاركتك! تم نشر تعليقك بنجاح.
+            <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-200 text-xs rounded border border-emerald-300 flex items-center gap-2">
+              <Check className="w-4 h-4 text-emerald-600" />
+              <span>شكراً لك! تم نشر تعليقك بنجاح وسيظهر للقراء فوراً.</span>
             </div>
           )}
 
@@ -494,7 +773,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
                 required
                 value={newCommentName}
                 onChange={(e) => setNewCommentName(e.target.value)}
-                placeholder="مثال: كريم من وهران"
+                placeholder="مثال: يوسف الدار البيضاء"
                 className="w-full text-xs p-2.5 rounded border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-600"
               />
             </div>
@@ -581,7 +860,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         </div>
       </section>
 
-      {/* 14. Related Articles Section */}
+      {/* 17. Related Articles Section */}
       {relatedArticles.length > 0 && (
         <section className="mt-14 pt-8 border-t border-stone-200 dark:border-stone-800 no-print">
           <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo'] mb-6 flex items-center gap-2">

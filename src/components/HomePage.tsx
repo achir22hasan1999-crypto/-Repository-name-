@@ -71,7 +71,10 @@ export const HomePage: React.FC<HomePageProps> = ({
   // Department blocks
   const economyArticles = articles.filter((a) => a.category === 'economy');
   const sportsArticles = articles.filter((a) => a.category === 'sports');
-  const techArticles = articles.filter((a) => a.category === 'tech');
+  const techArticles = articles.filter((a) => a.category === 'tech' || a.category === 'ai');
+  const cookingArticles = articles.filter((a) => a.category === 'cooking');
+  const aiArticles = articles.filter((a) => a.category === 'ai');
+
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 font-['Tajawal']">
@@ -329,17 +332,47 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
-            {/* Technology Block */}
+            {/* Cooking & Authentic Recipes Block */}
+            <div>
+              <div className="flex items-center justify-between pb-2 mb-6 border-b border-stone-200 dark:border-stone-800">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-6 bg-red-700 rounded-xs"></span>
+                  <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo']">
+                    مطبخ ووصفات المغرب العربي والعالم
+                  </h3>
+                </div>
+                <button
+                  onClick={() => onSelectCategory('cooking')}
+                  className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
+                >
+                  <span>عرض جميع الوصفات</span>
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {(cookingArticles.length > 0 ? cookingArticles : articles.slice(0, 3)).slice(0, 3).map((item) => (
+                  <ArticleCard
+                    key={item.id}
+                    article={item}
+                    variant="standard"
+                    onOpen={onOpenArticle}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Artificial Intelligence & Tech Block */}
             <div>
               <div className="flex items-center justify-between pb-2 mb-6 border-b border-stone-200 dark:border-stone-800">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-6 bg-blue-600 rounded-xs"></span>
                   <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo']">
-                    تكنولوجيا وابتكار
+                    الذكاء الاصطناعي والتكنولوجيا المتقدمة
                   </h3>
                 </div>
                 <button
-                  onClick={() => onSelectCategory('tech')}
+                  onClick={() => onSelectCategory('ai')}
                   className="text-xs font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
                 >
                   <span>عرض المزيد</span>

@@ -22,7 +22,12 @@ export default function App() {
   const [articles, setArticles] = useState<Article[]>(() => {
     try {
       const saved = localStorage.getItem('maghreb_news_articles');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 30) {
+          return parsed;
+        }
+      }
     } catch (e) {
       console.error(e);
     }
@@ -373,6 +378,10 @@ export default function App() {
             onLikeComment={handleLikeComment}
             onOpenArticle={handleOpenArticle}
             onBack={() => setView('home')}
+            onNavigate={(newView) => {
+              setView(newView);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             onEnterReaderMode={() => {
               setIsReaderMode(true);
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -420,7 +429,7 @@ export default function App() {
           )
         )}
 
-        {['about', 'contact', 'privacy', 'cookies', 'terms', 'disclaimer'].includes(view) && (
+        {['about', 'contact', 'privacy', 'cookies', 'terms', 'disclaimer', 'corrections', 'copyright', 'author'].includes(view) && (
           <LegalPages
             page={view as any}
             onNavigate={(newView) => {

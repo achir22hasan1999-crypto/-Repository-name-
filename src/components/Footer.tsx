@@ -274,6 +274,21 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
+                <button onClick={() => onNavigate('author')} className="hover:text-red-400 transition">
+                  هيئة التحرير والمؤلفون
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('corrections')} className="hover:text-red-400 text-amber-300 font-semibold transition">
+                  سياسة تصحيح وتحديث الأخبار
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('copyright')} className="hover:text-red-400 transition">
+                  حقوق النشر والملكية الفكرية
+                </button>
+              </li>
+              <li>
                 <button onClick={() => onNavigate('contact')} className="hover:text-red-400 transition">
                   اتصل بنا والمكاتب الإقليمية
                 </button>
@@ -295,7 +310,7 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <button onClick={() => onNavigate('disclaimer')} className="hover:text-red-400 transition">
-                  إخلاء المسؤولية والتصحيحات
+                  إخلاء المسؤولية العامة
                 </button>
               </li>
             </ul>
