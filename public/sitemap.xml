@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-  <!-- الصفحة الرئيسية -->
+  <!-- الرئيسية -->
   <url>
     <loc>https://almaghreb-alyoum.com/</loc>
     <lastmod>2026-09-30</lastmod>
@@ -58,7 +58,7 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- الصفحات القانونية والمؤسساتية -->
+  <!-- الصفحات المؤسساتية -->
   <url>
     <loc>https://almaghreb-alyoum.com/about</loc>
     <lastmod>2026-09-30</lastmod>
@@ -114,7 +114,67 @@
     <priority>0.5</priority>
   </url>
 
-  <!-- المقالات الثلاثين الأصلية -->
+  <!-- جميع المقالات (القديمة والجديدة) -->
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/maghreb-summit-renewable-energy-trade-tunis</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/morocco-solar-expansion-high-speed-train-projects</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/algeria-tassili-heritage-youth-tech-innovation</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/tunisia-carthage-tech-hub-ai-investments</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/libya-oil-production-stability-reconstruction-plans</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/mauritania-green-hydrogen-megaproject-nouadhibou</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/maghreb-football-champions-league-highlights</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/video-documentary-draa-tassili-oasis-architecture</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/society-tea-traditions-saharan-literature-morocco-mauritania</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://almaghreb-alyoum.com/article/world-climate-agreement-africa-priorities-summit</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
   <url>
     <loc>https://almaghreb-alyoum.com/article/morocco-green-hydrogen-strategy-investments-partnerships</loc>
     <lastmod>2026-09-30</lastmod>

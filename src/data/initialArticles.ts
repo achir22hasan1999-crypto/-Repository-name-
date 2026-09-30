@@ -1,9 +1,11 @@
 import { Article, RssFeedItem } from '../types';
+import { ARTICLES_ORIGINAL } from './articlesOriginal';
 import { ARTICLES_MOROCCO } from './articlesMorocco';
 import { ARTICLES_WORLD } from './articlesWorld';
 import { ARTICLES_COOKING } from './articlesCooking';
 
 export const INITIAL_ARTICLES: Article[] = [
+  ...ARTICLES_ORIGINAL,
   ...ARTICLES_MOROCCO,
   ...ARTICLES_WORLD,
   ...ARTICLES_COOKING
