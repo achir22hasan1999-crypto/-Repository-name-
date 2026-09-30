@@ -1,0 +1,606 @@
+import React, { useState } from 'react';
+import { 
+  Clock, 
+  Eye, 
+  Share2, 
+  Printer, 
+  Volume2, 
+  VolumeX, 
+  Heart, 
+  MessageSquare, 
+  Check, 
+  Copy, 
+  ChevronRight, 
+  Send, 
+  Bookmark,
+  ExternalLink,
+  ShieldAlert,
+  BookOpen
+} from 'lucide-react';
+import { Article, Comment } from '../types';
+import { AdSenseBanner } from './AdSenseBanner';
+import { ArticleCard } from './ArticleCard';
+import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
+
+interface ArticleDetailProps {
+  article: Article;
+  relatedArticles: Article[];
+  comments: Comment[];
+  onAddComment: (articleId: string, authorName: string, content: string, country: string) => void;
+  onLikeComment: (commentId: string) => void;
+  onOpenArticle: (id: string) => void;
+  onBack: () => void;
+  onEnterReaderMode?: () => void;
+}
+
+export const ArticleDetail: React.FC<ArticleDetailProps> = ({
+  article,
+  relatedArticles,
+  comments,
+  onAddComment,
+  onLikeComment,
+  onOpenArticle,
+  onBack,
+  onEnterReaderMode,
+}) => {
+  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(article.likesCount);
+
+  // Comment form state
+  const [newCommentName, setNewCommentName] = useState('');
+  const [newCommentCountry, setNewCommentCountry] = useState('المغرب');
+  const [newCommentContent, setNewCommentContent] = useState('');
+  const [commentSuccess, setCommentSuccess] = useState(false);
+
+  const getCountryName = (c: string) => {
+    const match = MAGHREB_COUNTRIES.find((item) => item.id === c);
+    return match ? `${match.flag} ${match.name}` : 'المغرب العربي';
+  };
+
+  const getCategoryLabel = (cat: string) => {
+    const match = CATEGORIES_CONFIG.find((item) => item.id === cat);
+    return match ? match.label : cat;
+  };
+
+  const formattedDate = new Intl.DateTimeFormat('ar-MA', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(article.publishDate));
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2500);
+  };
+
+  const handleToggleLike = () => {
+    if (!liked) {
+      setLiked(true);
+      setLikesCount((prev) => prev + 1);
+    } else {
+      setLiked(false);
+      setLikesCount((prev) => prev - 1);
+    }
+  };
+
+  const handleCommentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCommentName.trim() || !newCommentContent.trim()) return;
+
+    onAddComment(article.id, newCommentName.trim(), newCommentContent.trim(), newCommentCountry);
+    setNewCommentName('');
+    setNewCommentContent('');
+    setCommentSuccess(true);
+    setTimeout(() => setCommentSuccess(false), 4000);
+  };
+
+  const articleComments = comments.filter((c) => c.articleId === article.id);
+
+  // Social share URLs
+  const pageUrl = encodeURIComponent(window.location.href);
+  const pageTitle = encodeURIComponent(article.title);
+
+  const shareWhatsApp = `https://api.whatsapp.com/send?text=${pageTitle}%20${pageUrl}`;
+  const shareTwitter = `https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}`;
+  const shareFacebook = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+
+  const paragraphs = article.content.split('\n\n').filter(Boolean);
+
+  return (
+    <article className="max-w-4xl mx-auto px-4 sm:px-6 py-6 font-['Tajawal']">
+      {/* 1. Breadcrumbs */}
+      <div className="flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 mb-4 no-print">
+        <button onClick={onBack} className="hover:text-red-700 hover:underline">
+          الرئيسية
+        </button>
+        <ChevronRight className="w-3.5 h-3.5 rotate-180" />
+        <span className="font-semibold text-stone-700 dark:text-stone-300">
+          {getCategoryLabel(article.category)}
+        </span>
+        <ChevronRight className="w-3.5 h-3.5 rotate-180" />
+        <span className="truncate max-w-[200px] sm:max-w-md text-stone-400">
+          {article.title}
+        </span>
+      </div>
+
+      {/* 2. Country & Category Badges */}
+      <div className="flex items-center gap-2 text-xs font-semibold text-stone-600 dark:text-stone-300 mb-3">
+        <span className="text-red-700 dark:text-red-400 text-sm font-bold">
+          {getCountryName(article.country)}
+        </span>
+        <span aria-hidden="true">·</span>
+        <span>{getCategoryLabel(article.category)}</span>
+        {article.isBreaking && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span className="bg-red-600 text-white px-2 py-0.5 rounded text-[11px] font-bold">
+              عاجل
+            </span>
+          </>
+        )}
+      </div>
+
+      {/* Reader mode prompt banner */}
+      {onEnterReaderMode && (
+        <div className="mb-4 py-2 px-3 bg-amber-50/80 dark:bg-stone-900/90 border border-amber-200 dark:border-stone-800 rounded-lg flex items-center justify-between gap-3 text-xs no-print text-stone-700 dark:text-stone-300">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>تفضل قراءة هادئة بدون إعلانات أو مشتتات؟</span>
+          </div>
+          <button
+            onClick={onEnterReaderMode}
+            className="text-red-700 dark:text-red-400 font-bold hover:underline flex items-center gap-1 shrink-0"
+          >
+            <span>فتح في وضع القارئ</span>
+            <ChevronRight className="w-3.5 h-3.5 rotate-180" />
+          </button>
+        </div>
+      )}
+
+      {/* 3. Main Headline */}
+      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-stone-950 dark:text-stone-50 leading-tight font-['Cairo'] mb-4" style={{ textWrap: 'balance' }}>
+        {article.title}
+      </h1>
+
+      {/* 4. Deck / Subhead summary */}
+      <p className="text-base sm:text-xl text-stone-600 dark:text-stone-300 font-medium leading-relaxed mb-6 border-r-4 border-red-700 pr-4">
+        {article.summary}
+      </p>
+
+      {/* 5. Author, Publication Date & Utility Bar */}
+      <div className="border-y border-stone-200 dark:border-stone-800 py-3 mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <img
+            src={article.author.avatar}
+            alt={article.author.name}
+            className="w-11 h-11 rounded-full object-cover border border-stone-300 dark:border-stone-700 shadow-sm"
+          />
+          <div>
+            <div className="font-bold text-sm text-stone-900 dark:text-white">
+              {article.author.name}
+            </div>
+            <div className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-2">
+              <span>{article.author.role}</span>
+              <span aria-hidden="true">·</span>
+              <span className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                {formattedDate}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action controls (Reader View, Font Size, Audio, Print) */}
+        <div className="flex items-center gap-2 text-stone-600 dark:text-stone-300 no-print">
+          {/* Reader View button */}
+          {onEnterReaderMode && (
+            <button
+              onClick={onEnterReaderMode}
+              className="px-3 py-1.5 rounded-lg border border-stone-800 dark:border-stone-200 bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 hover:bg-red-700 dark:hover:bg-red-600 dark:hover:text-white transition flex items-center gap-1.5 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-[0.98]"
+              title="تفعيل وضع القارئ (تجربة هادئة بدون إعلانات أو مشتتات)"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+              <span>وضع القارئ</span>
+            </button>
+          )}
+
+          {/* Audio reader simulation */}
+          <button
+            onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+            className={`p-2 rounded border transition flex items-center gap-1 text-xs ${
+              isPlayingAudio
+                ? 'bg-red-50 text-red-700 border-red-300 dark:bg-red-950 dark:border-red-800'
+                : 'border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800'
+            }`}
+            title="استمع للمقال صوتياً"
+          >
+            {isPlayingAudio ? (
+              <>
+                <VolumeX className="w-4 h-4 text-red-600 animate-pulse" />
+                <span className="hidden sm:inline font-bold">إيقاف الاستماع</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-4 h-4" />
+                <span className="hidden sm:inline">استمع للمقال</span>
+              </>
+            )}
+          </button>
+
+          {/* Font Size Adjuster */}
+          <div className="flex items-center border border-stone-300 dark:border-stone-700 rounded overflow-hidden text-xs">
+            <button
+              onClick={() => setFontSize('normal')}
+              className={`px-2 py-1.5 ${fontSize === 'normal' ? 'bg-stone-200 dark:bg-stone-700 font-bold' : 'hover:bg-stone-100'}`}
+              title="خط عادي"
+            >
+              أ
+            </button>
+            <button
+              onClick={() => setFontSize('large')}
+              className={`px-2 py-1.5 ${fontSize === 'large' ? 'bg-stone-200 dark:bg-stone-700 font-bold text-sm' : 'hover:bg-stone-100'}`}
+              title="خط كبير"
+            >
+              أ+
+            </button>
+            <button
+              onClick={() => setFontSize('xlarge')}
+              className={`px-2 py-1.5 ${fontSize === 'xlarge' ? 'bg-stone-200 dark:bg-stone-700 font-bold text-base' : 'hover:bg-stone-100'}`}
+              title="خط كبير جداً"
+            >
+              أ++
+            </button>
+          </div>
+
+          {/* Print button */}
+          <button
+            onClick={() => window.print()}
+            className="p-2 border border-stone-300 dark:border-stone-700 rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition"
+            title="طباعة المقال"
+          >
+            <Printer className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Audio Player Bar when activated */}
+      {isPlayingAudio && (
+        <div className="mb-6 p-3 bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 rounded-lg flex items-center justify-between gap-4 animate-fade-in no-print">
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-red-600 animate-ping"></div>
+            <div>
+              <span className="text-xs font-bold text-red-900 dark:text-red-200 block">
+                جاري القراءة الصوتية باللغة العربية الفصحى
+              </span>
+              <span className="text-[11px] text-red-700 dark:text-red-400">
+                القارئ الآلي الذكي لـ "المغرب العربي اليوم" · المدة المقدرة: {article.audioLengthMinutes || 3} دقائق
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsPlayingAudio(false)}
+            className="text-xs font-bold text-red-800 dark:text-red-300 hover:underline"
+          >
+            إغلاق
+          </button>
+        </div>
+      )}
+
+      {/* 6. Lead Feature Image with Caption & Attribution */}
+      <div className="mb-8 rounded-lg overflow-hidden border border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-stone-900">
+        <img
+          src={article.leadImage}
+          alt={article.title}
+          className="w-full max-h-[500px] object-cover"
+        />
+        {article.imageCaption && (
+          <div className="p-3 text-xs text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800 italic">
+            📷 {article.imageCaption}
+          </div>
+        )}
+      </div>
+
+      {/* 7. Social Share floating bar */}
+      <div className="mb-8 p-3 bg-stone-100 dark:bg-stone-800/80 rounded-lg flex flex-wrap items-center justify-between gap-3 no-print">
+        <div className="flex items-center gap-2 text-xs font-bold text-stone-700 dark:text-stone-300">
+          <Share2 className="w-4 h-4 text-red-600" />
+          <span>شارك الخبر عبر:</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* WhatsApp */}
+          <a
+            href={shareWhatsApp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-[#25D366] hover:bg-[#20ba59] text-white rounded text-xs font-semibold flex items-center gap-1.5 transition"
+          >
+            <span>واتساب</span>
+          </a>
+
+          {/* X / Twitter */}
+          <a
+            href={shareTwitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-black hover:bg-stone-800 text-white rounded text-xs font-semibold flex items-center gap-1.5 transition"
+          >
+            <span>X (تويتر)</span>
+          </a>
+
+          {/* Facebook */}
+          <a
+            href={shareFacebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded text-xs font-semibold flex items-center gap-1.5 transition"
+          >
+            <span>فيسبوك</span>
+          </a>
+
+          {/* Copy link */}
+          <button
+            onClick={handleCopyLink}
+            className="px-3 py-1.5 border border-stone-300 dark:border-stone-600 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 rounded text-xs font-semibold flex items-center gap-1.5 transition"
+          >
+            {copiedLink ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span>تم النسخ!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span>نسخ الرابط</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* 8. Article Prose Body */}
+      <div
+        className={`leading-relaxed space-y-6 text-stone-800 dark:text-stone-200 ${
+          fontSize === 'large'
+            ? 'text-lg sm:text-xl leading-loose'
+            : fontSize === 'xlarge'
+            ? 'text-xl sm:text-2xl leading-loose'
+            : 'text-base sm:text-lg leading-relaxed'
+        }`}
+      >
+        {paragraphs.map((p, idx) => {
+          return (
+            <React.Fragment key={idx}>
+              <p
+                className={
+                  idx === 0
+                    ? 'first-letter:text-4xl first-letter:font-bold first-letter:text-red-700 first-letter:float-right first-letter:ml-3 first-letter:leading-none'
+                    : ''
+                }
+              >
+                {p}
+              </p>
+
+              {/* In-article AdSense Banner inserted naturally after paragraph 2 */}
+              {idx === 1 && (
+                <div className="no-print my-8">
+                  <AdSenseBanner slot="in-article" />
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+
+      {/* 9. Source & Verification Attribution */}
+      <div className="mt-8 p-4 bg-stone-100 dark:bg-stone-800/60 rounded-lg border border-stone-200 dark:border-stone-700 text-xs text-stone-600 dark:text-stone-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <ShieldAlert className="w-4 h-4 text-stone-500" />
+          <span>
+            <strong>المصدر والاعتماد:</strong> {article.source}
+          </span>
+        </div>
+        {article.sourceUrl && (
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-red-700 dark:text-red-400 hover:underline flex items-center gap-1"
+          >
+            <span>رابط المصدر المعتمد</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        )}
+      </div>
+
+      {/* 10. Tags / Keywords */}
+      {article.tags && article.tags.length > 0 && (
+        <div className="mt-6 flex flex-wrap items-center gap-2 text-xs">
+          <span className="font-bold text-stone-400">الكلمات المفتاحية:</span>
+          {article.tags.map((tag, i) => (
+            <span
+              key={i}
+              className="bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2.5 py-1 rounded hover:bg-stone-300 transition cursor-pointer"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* 11. Article Interaction Bar (Likes & Comments counter) */}
+      <div className="mt-8 py-4 border-y border-stone-200 dark:border-stone-800 flex items-center justify-between no-print">
+        <button
+          onClick={handleToggleLike}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition ${
+            liked
+              ? 'bg-red-50 text-red-600 border border-red-200'
+              : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200'
+          }`}
+        >
+          <Heart className={`w-4 h-4 ${liked ? 'fill-current text-red-600' : ''}`} />
+          <span>أعجبني ({likesCount})</span>
+        </button>
+
+        <div className="flex items-center gap-2 text-sm text-stone-500">
+          <MessageSquare className="w-4 h-4" />
+          <span>{articleComments.length} تعليقات</span>
+        </div>
+      </div>
+
+      {/* 12. Bottom AdSense Banner */}
+      <div className="no-print my-8">
+        <AdSenseBanner slot="bottom-footer" />
+      </div>
+
+      {/* 13. Comments Section */}
+      <section className="mt-10 no-print">
+        <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo'] mb-4 flex items-center gap-2">
+          <span>آراء القراء والتعليقات</span>
+          <span className="text-xs bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2 py-0.5 rounded-full font-mono">
+            {articleComments.length}
+          </span>
+        </h3>
+
+        {/* Comment Input Form */}
+        <form
+          onSubmit={handleCommentSubmit}
+          className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-lg p-4 sm:p-6 mb-8 shadow-xs"
+        >
+          <h4 className="text-sm font-bold text-stone-800 dark:text-stone-200 mb-3">
+            أضف تعليقك على هذا الخبر (تخضع التعليقات لميثاق الشرف الصحفي)
+          </h4>
+
+          {commentSuccess && (
+            <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 text-emerald-800 dark:text-emerald-200 text-xs rounded-md">
+              شكراً لمشاركتك! تم نشر تعليقك بنجاح.
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            <div>
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                الاسم أو اللقب *
+              </label>
+              <input
+                type="text"
+                required
+                value={newCommentName}
+                onChange={(e) => setNewCommentName(e.target.value)}
+                placeholder="مثال: كريم من وهران"
+                className="w-full text-xs p-2.5 rounded border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-600"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+                بلد الإقامة
+              </label>
+              <select
+                value={newCommentCountry}
+                onChange={(e) => setNewCommentCountry(e.target.value)}
+                className="w-full text-xs p-2.5 rounded border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-600"
+              >
+                <option value="المغرب">🇲🇦 المغرب</option>
+                <option value="الجزائر">🇩🇿 الجزائر</option>
+                <option value="تونس">🇹🇳 تونس</option>
+                <option value="ليبيا">🇱🇾 ليبيا</option>
+                <option value="موريتانيا">🇲🇷 موريتانيا</option>
+                <option value="المهجر">🌍 المهجر / دول أخرى</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label className="block text-xs font-semibold text-stone-600 dark:text-stone-400 mb-1">
+              نص التعليق *
+            </label>
+            <textarea
+              required
+              rows={3}
+              value={newCommentContent}
+              onChange={(e) => setNewCommentContent(e.target.value)}
+              placeholder="اكتب وجهة نظرك باحترام وموضوعية..."
+              className="w-full text-xs p-2.5 rounded border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-600"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-5 py-2.5 rounded transition flex items-center gap-1.5 shadow-sm"
+          >
+            <span>نشر التعليق</span>
+            <Send className="w-3.5 h-3.5" />
+          </button>
+        </form>
+
+        {/* Existing Comments List */}
+        <div className="space-y-4">
+          {articleComments.length === 0 ? (
+            <p className="text-xs text-stone-400 text-center py-6">
+              كن أول من يعلق على هذا الخبر ويبدي رأيه.
+            </p>
+          ) : (
+            articleComments.map((c) => (
+              <div
+                key={c.id}
+                className="p-4 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/60"
+              >
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-stone-900 dark:text-white">
+                      {c.authorName}
+                    </span>
+                    {c.country && (
+                      <span className="text-stone-500">({c.country})</span>
+                    )}
+                  </div>
+                  <span className="text-stone-400">{c.date}</span>
+                </div>
+                <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+                  {c.content}
+                </p>
+                <div className="mt-2 flex items-center gap-4 text-xs text-stone-400">
+                  <button
+                    onClick={() => onLikeComment(c.id)}
+                    className="hover:text-red-600 flex items-center gap-1"
+                  >
+                    <Heart className="w-3 h-3" />
+                    <span>{c.likes} إعجاب</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* 14. Related Articles Section */}
+      {relatedArticles.length > 0 && (
+        <section className="mt-14 pt-8 border-t border-stone-200 dark:border-stone-800 no-print">
+          <h3 className="text-xl font-black text-stone-900 dark:text-white font-['Cairo'] mb-6 flex items-center gap-2">
+            <span className="w-2.5 h-6 bg-red-700 rounded-xs inline-block"></span>
+            <span>مقالات وأخبار ذات صلة</span>
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {relatedArticles.slice(0, 3).map((item) => (
+              <ArticleCard
+                key={item.id}
+                article={item}
+                variant="standard"
+                onOpen={onOpenArticle}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+    </article>
+  );
+};

@@ -1,0 +1,3 @@
+# Google AdSense ads.txt for Al-Maghreb Al-Arabi Al-Youm
+# Replace pub-0000000000000000 with your real AdSense Publisher ID (معرف الناشر الخاص بك)
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
