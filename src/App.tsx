@@ -16,6 +16,7 @@ import { CookieBanner } from './components/CookieBanner';
 import { Footer } from './components/Footer';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { DomainExportModal } from './components/DomainExportModal';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App() {
   // 1. Persistent State
@@ -480,6 +481,9 @@ export default function App() {
         isOpen={showDomainModal}
         onClose={() => setShowDomainModal(false)}
       />
+
+      {/* 8. Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 }
