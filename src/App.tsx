@@ -155,15 +155,30 @@ export default function App() {
   // Synchronize routing with browser URL (HTML5 History API) on mount & popstate
   useEffect(() => {
     const syncRouteFromUrl = () => {
+      let rawSlug = '';
       const pathname = window.location.pathname;
+      const searchParams = new URLSearchParams(window.location.search);
+      const articleParam = searchParams.get('article') || searchParams.get('art') || searchParams.get('slug');
+      const hash = window.location.hash;
 
       if (pathname.startsWith('/article/')) {
-        const rawSlug = pathname.replace(/^\/article\//, '').replace(/\/$/, '');
+        rawSlug = pathname.replace(/^\/article\//, '').replace(/\/$/, '');
+      } else if (articleParam) {
+        rawSlug = articleParam.trim();
+      } else if (hash.startsWith('#/article/')) {
+        rawSlug = hash.replace(/^#\/article\//, '').replace(/\/$/, '');
+      }
+
+      if (rawSlug) {
         const matched = findArticleBySlugOrId(articles, rawSlug);
         if (matched) {
           setActiveArticleId(matched.id);
           setView('article');
           setIsReaderMode(false);
+          const cleanUrl = getArticleUrl(matched);
+          if (pathname !== cleanUrl) {
+            window.history.replaceState({ articleId: matched.id, slug: matched.slug }, '', cleanUrl);
+          }
         } else {
           setActiveArticleId(null);
           setUnknownSlug(rawSlug);

@@ -1,12 +1,7 @@
 {
-  "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/article/:slug",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/((?!api/|assets/|images/|robots.txt|sitemap.xml|ads.txt).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
