@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        function shouldSuppress(err) {
+          if (!err) return false;
+          var msg = String((err && (err.message || err.reason || err)) || '');
+          return (
+            msg.indexOf('MetaMask') !== -1 ||
+            msg.indexOf('ethereum') !== -1 ||
+            msg.indexOf('wallet') !== -1 ||
+            msg.indexOf('chrome-extension') !== -1
+          );
+        }
+
+        window.addEventListener('unhandledrejection', function(event) {
+          if (shouldSuppress(event.reason)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return false;
+          }
+        }, true);
+
+        window.addEventListener('error', function(event) {
+          if (shouldSuppress(event.error || event.message)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return false;
+          }
+        }, true);
+      })();
+    </script>
+    <title>المغرب العربي اليوم | أخبار المغرب العربي والعالم لحظة بلحظة</title>
+    <meta name="description" content="بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة." />
+    <meta name="keywords" content="أخبار المغرب, أخبار الجزائر, أخبار تونس, أخبار ليبيا, أخبار موريتانيا, المغرب العربي, اقتصاد, رياضة, تكنولوجيا, أحداث الساعة" />
+    <meta name="author" content="المغرب العربي اليوم" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <link rel="canonical" href="https://almaghreb-alyoum.com/" />
+    <meta name="google-site-verification" content="u-4c-4qDMjBWf0xwO-5DoomcZdwMGdjlK-hTJYwGvcU" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    <meta property="og:site_name" content="المغرب العربي اليوم" />
+    <meta property="og:title" content="المغرب العربي اليوم | أخبار المغرب العربي والعالم لحظة بلحظة" />
+    <meta property="og:description" content="بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة." />
+    <meta property="og:url" content="https://almaghreb-alyoum.com/" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="المغرب العربي اليوم | أخبار المغرب العربي والعالم لحظة بلحظة" />
+    <meta name="twitter:description" content="بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة." />
+    <meta name="twitter:url" content="https://almaghreb-alyoum.com/" />
+
+    <!-- Google Fonts for Arabic Journalism: Cairo for Headlines, Tajawal & Readex Pro for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Schema.org NewsMediaOrganization Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "name": "المغرب العربي اليوم",
+      "alternateName": "Al Maghreb Al Arabi Al Youm",
+      "url": "https://almaghreb-alyoum.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://almaghreb-alyoum.com/logo.png",
+        "width": 600,
+        "height": 60
+      },
+      "slogan": "أخبار المغرب العربي والعالم لحظة بلحظة",
+      "sameAs": [
+        "https://facebook.com",
+        "https://x.com",
+        "https://youtube.com",
+        "https://t.me"
+      ],
+      "publishingPrinciples": "https://almaghreb-alyoum.com/editorial-policy",
+      "correctionsPolicy": "https://almaghreb-alyoum.com/corrections",
+      "diversityPolicy": "https://almaghreb-alyoum.com/diversity"
+    }
+    </script>
+
+    <!-- Google AdSense Official Script Integration -->
+    <script>
+      (function() {
+        try {
+          var pubId = localStorage.getItem('maghreb_adsense_pub_id');
+          if (pubId && (pubId.startsWith('ca-pub-') || pubId.startsWith('pub-'))) {
+            var fullClient = pubId.startsWith('ca-pub-') ? pubId : ('ca-' + pubId);
+            var adScript = document.createElement('script');
+            adScript.async = true;
+            adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + fullClient;
+            adScript.crossOrigin = 'anonymous';
+            document.head.appendChild(adScript);
+          }
+        } catch(e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-stone-50 text-stone-900 antialiased selection:bg-red-600 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
