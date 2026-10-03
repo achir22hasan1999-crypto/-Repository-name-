@@ -260,8 +260,10 @@ $$\\text{صافي الربح الشهري} = \\text{مجموع العمولات 
     contentType: 'news',
     isBreaking: false,
     isLead: false,
-    publishedAt: '2026-10-02T18:00:00Z',
-    views: 5240,
+    publishDate: '2026-10-02T18:00:00Z',
+    readsCount: 5240,
+    likesCount: 38,
+    commentsCount: 12,
     tags: ['وفاكاش', 'كيف أنشئ وكالة', 'مشاريع المغرب', 'تحويل الأموال', 'استثمار', 'Wafacash', 'خدمات مالية'],
     source: 'المغرب العربي اليوم - دليل المشاريع',
     author: {
