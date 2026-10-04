@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Clock, Eye, Play, Sparkles } from 'lucide-react';
 import { Article } from '../types';
-import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES } from '../data/initialArticles';
+import { CATEGORIES_CONFIG, ARAB_COUNTRIES } from '../data/initialArticles';
 import { formatSafeArabicDate } from '../utils/dateFormatter';
 import { getArticleUrl } from '../utils/slugUtils';
 
@@ -21,8 +21,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   const [imgError, setImgError] = useState(false);
 
   const getCountryName = (c: string) => {
-    const match = MAGHREB_COUNTRIES.find((item) => item.id === c);
-    return match ? `${match.flag} ${match.name}` : 'المغرب العربي';
+    const match = ARAB_COUNTRIES.find((item: any) => item.id === c);
+    return match ? `${match.flag} ${match.shortName || match.name}` : 'العالم العربي';
   };
 
   const getCategoryLabel = (cat: string) => {

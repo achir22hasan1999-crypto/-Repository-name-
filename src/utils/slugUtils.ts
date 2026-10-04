@@ -64,6 +64,42 @@ const KNOWN_SLUG_ALIASES: Record<string, string> = {
   'agency-lana-cash-morocco-2026': 'agency-lana-cash-morocco-2026',
   'كيفية-إنشاء-وكالة-لانا-كاش-المغرب-2026': 'agency-lana-cash-morocco-2026',
   'كيفية-إنشاء-lana-cash-لانا-كاش-التابعة-لـ-cih-bank-في-المغرب-2026-الشروط-والوثائق-والتكلفة-والأرباح': 'agency-lana-cash-morocco-2026',
+  // Morocco
+  'morocco-ev-gigafactory-automotive-boom-2026': 'mor-ev-gigafactory-automotive-2026',
+  'morocco-world-cup-2030-hassan-ii-grand-stadium-infrastructure': 'mor-world-cup-2030-mega-stadium-hassan2',
+  // Algeria
+  'algeria-gara-djebilet-iron-mine-railway-steel-boom': 'alg-gara-djebilet-iron-railway-2026',
+  'algeria-green-hydrogen-renewable-energy-south2-corridor': 'alg-green-hydrogen-sout-h2-europe-2026',
+  // Tunisia
+  'tunisia-startups-ai-innovation-hub-strategy-2026': 'tun-startups-ai-digital-transformation-2026',
+  'tunisia-olive-oil-exports-eco-tourism-record-season': 'tun-olive-oil-record-exports-eco-tourism-2026',
+  // Libya
+  'libya-national-reconstruction-plan-infrastructure-mega-projects': 'lby-reconstruction-plan-infrastructure-investments-2026',
+  'libya-oil-production-two-million-barrels-solar-transition': 'lby-oil-production-expansion-solar-energy-2026',
+  // Mauritania
+  'mauritania-gta-lng-export-historic-economic-transformation': 'mrt-gta-lng-gas-export-economic-boom-2026',
+  'mauritania-aman-green-hydrogen-renewable-energy-hub': 'mrt-aman-green-hydrogen-mega-hub-2026',
+  // Egypt
+  'egypt-new-administrative-capital-monorail-smart-governance': 'egy-new-administrative-capital-monorail-2026',
+  'egypt-suez-canal-economic-zone-green-hydrogen-investments': 'egy-sczone-suez-canal-green-hydrogen-hub-2026',
+  // Saudi
+  'saudi-vision-2030-decade-of-achievements-economic-transformation': 'sau-vision-2030-decade-of-transformation-2026',
+  'saudi-arabia-40-billion-ai-fund-supercomputing-global-hub': 'sau-ai-supercomputing-global-hub-riyadh-2026',
+  // UAE
+  'uae-future-economy-2031-digital-trade-fintech-boom': 'uae-future-economy-2031-trade-fintech-2026',
+  'uae-space-exploration-barakah-nuclear-energy-leadership': 'uae-space-missions-barakah-nuclear-clean-energy-2026',
+  // Qatar
+  'qatar-north-field-lng-mega-expansion-energy-security': 'qat-north-field-lng-mega-expansion-energy-2026',
+  'qatar-third-national-development-strategy-lusail-smart-cities': 'qat-national-strategy-2030-smart-cities-lusail-2026',
+  // Kuwait
+  'kuwait-mubarak-al-kabeer-port-silk-city-mega-project': 'kwt-mubarak-port-silk-city-economic-corridor-2026',
+  'kuwait-shagaya-renewable-energy-park-solar-wind-transition': 'kwt-shagaya-renewable-energy-strategy-2026',
+  // Oman
+  'oman-vision-2040-duqm-port-special-economic-zone-success': 'omn-vision-2040-duqm-economic-turnaround-2026',
+  'oman-green-hydrogen-global-hub-hydrom-mega-contracts': 'omn-green-hydrogen-global-export-hub-hydrom-2026',
+  // Bahrain
+  'bahrain-fintech-bay-open-banking-crypto-capital-middle-east': 'bhr-fintech-hub-open-banking-crypto-2026',
+  'bahrain-king-hamad-causeway-metro-mega-infrastructure': 'bhr-king-hamad-causeway-metro-infrastructure-2026',
 };
 
 /**

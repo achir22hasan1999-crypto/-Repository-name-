@@ -4,6 +4,7 @@ import { ARTICLES_MOROCCO } from './articlesMorocco';
 import { ARTICLES_WORLD } from './articlesWorld';
 import { ARTICLES_COOKING } from './articlesCooking';
 import { ARTICLES_GULF } from './articlesGulf';
+import { ARTICLES_ARAB_WORLD } from './articlesArabWorld';
 import { AGENCY_ARTICLES } from './articlesAgency';
 
 // Extract Mansouri lead story to guarantee it is always position #1
@@ -13,6 +14,7 @@ const adjustedOriginals = ARTICLES_ORIGINAL.map(a => a.id === 'art-1' ? { ...a, 
 
 export const INITIAL_ARTICLES: Article[] = [
   { ...mansouriStory, isLead: true, isBreaking: true },
+  ...ARTICLES_ARAB_WORLD,
   ...otherMoroccoStories,
   ...adjustedOriginals,
   ...AGENCY_ARTICLES,
@@ -146,11 +148,11 @@ export const CATEGORIES_CONFIG = [
 ];
 
 export const MAGHREB_COUNTRIES = [
-  { id: 'morocco', name: 'المغرب', flag: '🇲🇦', capital: 'الرباط', currency: 'درهم مغربي (MAD)' },
-  { id: 'algeria', name: 'الجزائر', flag: '🇩🇿', capital: 'الجزائر', currency: 'دينار جزائري (DZD)' },
-  { id: 'tunisia', name: 'تونس', flag: '🇹🇳', capital: 'تونس', currency: 'دينار تونسي (TND)' },
-  { id: 'libya', name: 'ليبيا', flag: '🇱🇾', capital: 'طرابلس', currency: 'دينار ليبي (LYD)' },
-  { id: 'mauritania', name: 'موريتانيا', flag: '🇲🇷', capital: 'نواكشوط', currency: 'أوقية موريتانية (MRU)' }
+  { id: 'morocco', name: 'المغرب', shortName: 'المغرب', flag: '🇲🇦', capital: 'الرباط', currency: 'درهم مغربي (MAD)' },
+  { id: 'algeria', name: 'الجزائر', shortName: 'الجزائر', flag: '🇩🇿', capital: 'الجزائر', currency: 'دينار جزائري (DZD)' },
+  { id: 'tunisia', name: 'تونس', shortName: 'تونس', flag: '🇹🇳', capital: 'تونس', currency: 'دينار تونسي (TND)' },
+  { id: 'libya', name: 'ليبيا', shortName: 'ليبيا', flag: '🇱🇾', capital: 'طرابلس', currency: 'دينار ليبي (LYD)' },
+  { id: 'mauritania', name: 'موريتانيا', shortName: 'موريتانيا', flag: '🇲🇷', capital: 'نواكشوط', currency: 'أوقية موريتانية (MRU)' }
 ];
 
 export const GULF_COUNTRIES = [
@@ -161,3 +163,10 @@ export const GULF_COUNTRIES = [
   { id: 'oman', name: 'سلطنة عمان', shortName: 'عمان', flag: '🇴🇲', capital: 'مسقط', currency: 'ريال عماني (OMR)' },
   { id: 'bahrain', name: 'مملكة البحرين', shortName: 'البحرين', flag: '🇧🇭', capital: 'المنامة', currency: 'دينار بحريني (BHD)' }
 ];
+
+export const ARAB_COUNTRIES = [
+  ...MAGHREB_COUNTRIES,
+  ...GULF_COUNTRIES,
+  { id: 'arab', name: 'جمهورية مصر العربية', shortName: 'مصر', flag: '🇪🇬', capital: 'القاهرة', currency: 'جنيه مصري (EGP)' }
+];
+
