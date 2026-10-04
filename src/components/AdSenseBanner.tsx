@@ -12,14 +12,16 @@ declare global {
   }
 }
 
+const DEFAULT_PUB_ID = 'ca-pub-2469363104530149';
+
 export const AdSenseBanner: React.FC<AdSenseBannerProps> = ({ slot, className = '' }) => {
-  const [pubId, setPubId] = useState<string>('');
+  const [pubId, setPubId] = useState<string>(DEFAULT_PUB_ID);
   const [slotId, setSlotId] = useState<string>('');
   const [adLoaded, setAdLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     try {
-      const storedPub = localStorage.getItem('maghreb_adsense_pub_id') || '';
+      const storedPub = localStorage.getItem('maghreb_adsense_pub_id') || DEFAULT_PUB_ID;
       const storedSlot = localStorage.getItem(`maghreb_adsense_slot_${slot}`) || '';
       setPubId(storedPub);
       setSlotId(storedSlot);

@@ -88,22 +88,9 @@
     }
     </script>
 
-    <!-- Google AdSense Official Script Integration -->
-    <script>
-      (function() {
-        try {
-          var pubId = localStorage.getItem('maghreb_adsense_pub_id');
-          if (pubId && (pubId.startsWith('ca-pub-') || pubId.startsWith('pub-'))) {
-            var fullClient = pubId.startsWith('ca-pub-') ? pubId : ('ca-' + pubId);
-            var adScript = document.createElement('script');
-            adScript.async = true;
-            adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + fullClient;
-            adScript.crossOrigin = 'anonymous';
-            document.head.appendChild(adScript);
-          }
-        } catch(e) {}
-      })();
-    </script>
+    <!-- Google AdSense Official Script & Account Verification -->
+    <meta name="google-adsense-account" content="ca-pub-2469363104530149" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2469363104530149" crossorigin="anonymous"></script>
   </head>
   <body class="bg-stone-50 text-stone-900 antialiased selection:bg-red-600 selection:text-white">
     <div id="root"></div>
