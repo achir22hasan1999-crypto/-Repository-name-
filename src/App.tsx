@@ -51,7 +51,7 @@ export default function App() {
           const cachedIds = new Set(parsed.map((a: any) => a.id));
           const missingFromInitial = INITIAL_ARTICLES.filter(a => a.id !== targetLeadId && !cachedIds.has(a.id));
 
-          // Combine: Mansouri first, then cached articles, then newly added initial articles
+          // Combine: Mansouri first, then newly added articles from INITIAL_ARTICLES, then other cached articles
           const combined = [
             { 
               ...mansouriInitial, 
@@ -60,8 +60,8 @@ export default function App() {
               isLead: true, 
               isBreaking: true 
             },
-            ...otherArticles,
-            ...missingFromInitial
+            ...missingFromInitial,
+            ...otherArticles
           ];
 
           return combined.map((art: any) => ({

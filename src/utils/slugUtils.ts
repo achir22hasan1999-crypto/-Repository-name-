@@ -57,6 +57,13 @@ const KNOWN_SLUG_ALIASES: Record<string, string> = {
   'wafacash-agency-morocco-guide-2026': 'art-wafacash-agency-guide-2026',
   'how-to-start-wafacash-agency-morocco-2026-guide': 'art-wafacash-agency-guide-2026',
   'art-wafacash-agency-guide-2026': 'art-wafacash-agency-guide-2026',
+  'how-to-start-lana-cash-agency-morocco-2026-guide': 'agency-lana-cash-morocco-2026',
+  'lana-cash-agency-morocco-2026-guide': 'agency-lana-cash-morocco-2026',
+  'lana-cash-morocco-2026': 'agency-lana-cash-morocco-2026',
+  'art-lana-cash-agency-guide-2026': 'agency-lana-cash-morocco-2026',
+  'agency-lana-cash-morocco-2026': 'agency-lana-cash-morocco-2026',
+  'كيفية-إنشاء-وكالة-لانا-كاش-المغرب-2026': 'agency-lana-cash-morocco-2026',
+  'كيفية-إنشاء-lana-cash-لانا-كاش-التابعة-لـ-cih-bank-في-المغرب-2026-الشروط-والوثائق-والتكلفة-والأرباح': 'agency-lana-cash-morocco-2026',
 };
 
 /**
