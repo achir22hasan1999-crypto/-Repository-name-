@@ -1,2 +1,1 @@
-# Google AdSense ads.txt for Al-Maghreb Al-Arabi Al-Youm
 google.com, pub-2469363104530149, DIRECT, f08c47fec0942fa0
