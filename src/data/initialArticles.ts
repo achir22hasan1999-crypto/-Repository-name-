@@ -7,9 +7,9 @@ import { ARTICLES_GULF } from './articlesGulf';
 import { ARTICLES_ARAB_WORLD } from './articlesArabWorld';
 import { AGENCY_ARTICLES } from './articlesAgency';
 
-// Extract Mansouri lead story to guarantee it is always position #1
-const mansouriStory = ARTICLES_MOROCCO.find(a => a.id === 'mor-mansouri-gov-formation-2026') || ARTICLES_MOROCCO[0];
-const otherMoroccoStories = ARTICLES_MOROCCO.filter(a => a.id !== 'mor-mansouri-gov-formation-2026');
+// Extract Mansouri latest story to guarantee it is always position #1
+const mansouriStory = ARTICLES_MOROCCO.find(a => a.id === 'mor-mansouri-latest-updates-5-october-2026') || ARTICLES_MOROCCO[0];
+const otherMoroccoStories = ARTICLES_MOROCCO.filter(a => a.id !== mansouriStory.id);
 const adjustedOriginals = ARTICLES_ORIGINAL.map(a => a.id === 'art-1' ? { ...a, isLead: false } : a);
 
 export const INITIAL_ARTICLES: Article[] = [

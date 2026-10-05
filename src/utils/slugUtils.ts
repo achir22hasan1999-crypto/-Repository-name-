@@ -64,6 +64,9 @@ const KNOWN_SLUG_ALIASES: Record<string, string> = {
   'agency-lana-cash-morocco-2026': 'agency-lana-cash-morocco-2026',
   'كيفية-إنشاء-وكالة-لانا-كاش-المغرب-2026': 'agency-lana-cash-morocco-2026',
   'كيفية-إنشاء-lana-cash-لانا-كاش-التابعة-لـ-cih-bank-في-المغرب-2026-الشروط-والوثائق-والتكلفة-والأرباح': 'agency-lana-cash-morocco-2026',
+  'mansouri-government-latest-updates-parliament-opening-2026': 'mor-mansouri-latest-updates-5-october-2026',
+  'mor-mansouri-latest-updates-5-october-2026': 'mor-mansouri-latest-updates-5-october-2026',
+  'حكومة-فاطمة-الزهراء-المنصوري-آخر-مستجدات-تشكيل-الحكومة-المغربية': 'mor-mansouri-latest-updates-5-october-2026',
   // Morocco
   'morocco-ev-gigafactory-automotive-boom-2026': 'mor-ev-gigafactory-automotive-2026',
   'morocco-world-cup-2030-hassan-ii-grand-stadium-infrastructure': 'mor-world-cup-2030-mega-stadium-hassan2',
