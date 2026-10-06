@@ -112,6 +112,27 @@ const KNOWN_SLUG_ALIASES: Record<string, string> = {
   // Bahrain
   'bahrain-fintech-bay-open-banking-crypto-capital-middle-east': 'bhr-fintech-hub-open-banking-crypto-2026',
   'bahrain-king-hamad-causeway-metro-mega-infrastructure': 'bhr-king-hamad-causeway-metro-infrastructure-2026',
+  // Arab Nations 2026
+  'iraq-development-road-al-faw-grand-port-trade-corridor-2026': 'irq-development-road-al-faw-port-2026',
+  'irq-development-road-al-faw-port-2026': 'irq-development-road-al-faw-port-2026',
+  'jordan-economic-modernization-national-water-carrier-mining-2026': 'jor-economic-modernization-water-carrier-2026',
+  'jor-economic-modernization-water-carrier-2026': 'jor-economic-modernization-water-carrier-2026',
+  'lebanon-offshore-gas-exploration-block-9-solar-energy-boom-2026': 'lbn-offshore-gas-solar-recovery-2026',
+  'lbn-offshore-gas-solar-recovery-2026': 'lbn-offshore-gas-solar-recovery-2026',
+  'palestine-economic-resilience-digital-transformation-startups-2026': 'pal-resilience-digital-economy-startups-2026',
+  'pal-resilience-digital-economy-startups-2026': 'pal-resilience-digital-economy-startups-2026',
+  'syria-renewable-energy-projects-infrastructure-rehabilitation-trade-2026': 'syr-renewable-energy-rehabilitation-trade-2026',
+  'syr-renewable-energy-rehabilitation-trade-2026': 'syr-renewable-energy-rehabilitation-trade-2026',
+  'yemen-monetary-stability-ports-modernization-solar-projects-2026': 'yem-monetary-stability-ports-solar-2026',
+  'yem-monetary-stability-ports-solar-2026': 'yem-monetary-stability-ports-solar-2026',
+  'sudan-agricultural-revival-food-security-portsudan-investments-2026': 'sdn-food-security-portsudan-revival-2026',
+  'sdn-food-security-portsudan-revival-2026': 'sdn-food-security-portsudan-revival-2026',
+  'somalia-east-african-community-blue-economy-oil-exploration-2026': 'som-east-african-community-blue-economy-2026',
+  'som-east-african-community-blue-economy-2026': 'som-east-african-community-blue-economy-2026',
+  'djibouti-global-maritime-hub-free-zones-submarine-cables-2026': 'dji-global-maritime-hub-free-zones-2026',
+  'dji-global-maritime-hub-free-zones-2026': 'dji-global-maritime-hub-free-zones-2026',
+  'comoros-plan-emergent-blue-economy-ecotourism-vanilla-exports-2026': 'com-plan-emergent-blue-economy-vanilla-2026',
+  'com-plan-emergent-blue-economy-vanilla-2026': 'com-plan-emergent-blue-economy-vanilla-2026',
 };
 
 /**

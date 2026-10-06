@@ -5,6 +5,7 @@ import { ARTICLES_WORLD } from './articlesWorld';
 import { ARTICLES_COOKING } from './articlesCooking';
 import { ARTICLES_GULF } from './articlesGulf';
 import { ARTICLES_ARAB_WORLD } from './articlesArabWorld';
+import { ARTICLES_ARAB_NATIONS_2026 } from './articlesArabNations2026';
 import { AGENCY_ARTICLES } from './articlesAgency';
 
 // Extract Mansouri latest story to guarantee it is always position #1
@@ -15,6 +16,7 @@ const adjustedOriginals = ARTICLES_ORIGINAL.map(a => a.id === 'art-1' ? { ...a, 
 export const INITIAL_ARTICLES: Article[] = [
   { ...mansouriStory, isLead: true, isBreaking: true },
   ...ARTICLES_ARAB_WORLD,
+  ...ARTICLES_ARAB_NATIONS_2026,
   ...otherMoroccoStories,
   ...adjustedOriginals,
   ...AGENCY_ARTICLES,
