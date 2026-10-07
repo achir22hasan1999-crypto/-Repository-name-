@@ -81,8 +81,11 @@ const KNOWN_SLUG_ALIASES: Record<string, string> = {
   'حكومة-فاطمة-الزهراء-المنصوري-آخر-مستجدات-تشكيل-الحكومة-المغربية': 'mor-mansouri-latest-updates-5-october-2026',
   'union-constitutionnelle-conditions-participation-mansouri-government-2026': 'mor-union-constitutionnelle-government-consultations-2026',
   'mor-union-constitutionnelle-government-consultations-2026': 'mor-union-constitutionnelle-government-consultations-2026',
-  'الاتحاد-الدستوري-يحدد-شروط-مشاركته-في-الحكومة-المغربية-الجديدة': 'mor-union-constitutionnelle-government-consultations-2026',
-  // Morocco
+  // Morocco & Maghreb
+  'history-of-morocco-algeria-conflict-and-reasons-for-continuing-dispute': 'maghreb-morocco-algeria-conflict-history-analysis-2026',
+  'maghreb-morocco-algeria-conflict-history-analysis-2026': 'maghreb-morocco-algeria-conflict-history-analysis-2026',
+  'morocco-algeria-conflict-history-reasons-2026': 'maghreb-morocco-algeria-conflict-history-analysis-2026',
+  'تاريخ-الصراع-بين-المغرب-والجزائر-وأسباب-استمرار-الخلاف': 'maghreb-morocco-algeria-conflict-history-analysis-2026',
   'morocco-ev-gigafactory-automotive-boom-2026': 'mor-ev-gigafactory-automotive-2026',
   'morocco-world-cup-2030-hassan-ii-grand-stadium-infrastructure': 'mor-world-cup-2030-mega-stadium-hassan2',
   // Algeria
