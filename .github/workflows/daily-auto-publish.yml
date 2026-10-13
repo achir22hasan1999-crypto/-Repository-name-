@@ -1,0 +1,48 @@
+name: Daily Auto Publisher (5 Articles)
+
+on:
+  schedule:
+    # Runs daily at 06:00 UTC (9:00 AM Riyadh, 7:00 AM Rabat/Algiers/Tunis, 8:00 AM Cairo)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI anytime
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT || github.token }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Generate 5 Daily Trending Human-Style Articles (Morocco, Algeria, Tunisia, Egypt, Saudi Arabia)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node scripts/auto_publisher.cjs
+
+      - name: Commit and Push New Articles to GitHub
+        run: |
+          git config --global user.name "Auto Publisher Bot"
+          git config --global user.email "bot@almaghreb-alyoum.com"
+          git add src/data/articlesDailyAutopilot.ts
+          if git diff --staged --quiet; then
+            echo "No changes to commit. Articles are up to date."
+          else
+            git commit -m "Auto-publish: 5 new human-written trending articles for Morocco, Algeria, Tunisia, Egypt & Saudi Arabia [skip ci]"
+            git push origin main
+            echo "Articles pushed successfully! Vercel deployment triggered automatically."
+          fi

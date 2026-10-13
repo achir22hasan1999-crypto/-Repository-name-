@@ -1,0 +1,8 @@
+{
+  "name": "المغرب العربي اليوم",
+  "description": "بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
