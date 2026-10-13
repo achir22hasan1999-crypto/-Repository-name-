@@ -2,8 +2,10 @@ import { Article } from '../types';
 import parliamentCoverImg from '../assets/images/parliament_mansouri_cover_1790956433850.jpg';
 import coalitionLeadersImg from '../assets/images/mansouri_coalition_leaders_1790956185653.jpg';
 import royalParliamentOpeningImg from '../assets/images/king_parliament_morocco_opening_1791484769185.jpg';
+import { ARTICLES_MOROCCO_AGRI_2026 } from './articlesMoroccoAgri2026';
 
 export const ARTICLES_MOROCCO: Article[] = [
+  ...ARTICLES_MOROCCO_AGRI_2026,
   {
     id: 'mor-king-mohammed-vi-opens-parliament-friday-9-october-2026',
     title: 'الملك محمد السادس يترأس افتتاح البرلمان المغربي غدا الجمعة',
