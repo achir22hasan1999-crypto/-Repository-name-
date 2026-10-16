@@ -53,6 +53,15 @@ export class ErrorBoundary extends Component<Props, State> {
             </p>
             <button
               onClick={() => {
+                try {
+                  localStorage.removeItem("maghreb_news_articles");
+                  localStorage.removeItem("maghreb_news_articles_v3");
+                  localStorage.removeItem("maghreb_news_articles_v4");
+                  localStorage.removeItem("maghreb_news_articles_v2026_10_02_wafacash_thumb");
+                  localStorage.removeItem("maghreb_news_articles_v2026_10_08_barid_cash");
+                  localStorage.removeItem("maghreb_news_articles_v2026_10_08_king_parliament_opening");
+                  localStorage.removeItem("maghreb_news_articles_v2026_10_16_futsal_breaking");
+                } catch (e) {}
                 this.setState({ hasError: false });
                 window.location.reload();
               }}

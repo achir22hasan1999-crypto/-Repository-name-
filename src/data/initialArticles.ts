@@ -22,20 +22,20 @@ export const ALL_22_ARAB_TRENDING_ARTICLES = [
   ...ARTICLES_ARAB_NILE_RED_SEA_TRENDING
 ];
 
-// Lead breaking story: King Mohammed VI opens parliament on Friday 9 October 2026
-const royalParliamentStory = ARTICLES_ARAB_MAGHREB_TRENDING.find(a => a.country === 'morocco') || ARTICLES_MOROCCO.find(a => a.id === 'mor-king-mohammed-vi-opens-parliament-friday-9-october-2026') || ARTICLES_MOROCCO[0];
-const otherMoroccoStories = ARTICLES_MOROCCO.filter(a => a.id !== royalParliamentStory.id);
+// Lead breaking story: Moroccan Futsal team thrashes Zambia 7-0 and reaches AFCON 2026 semi-finals
+const breakingFutsalStory = ARTICLES_MOROCCO.find(a => a.id === 'mor-futsal-afcon-2026-morocco-zambia-7-0-semi-final-qualification') || ARTICLES_MOROCCO[0];
+const otherMoroccoStories = ARTICLES_MOROCCO.filter(a => a.id !== breakingFutsalStory.id);
 const adjustedOriginals = ARTICLES_ORIGINAL.map(a => a.id === 'art-1' ? { ...a, isLead: false } : a);
 
 export const INITIAL_ARTICLES: Article[] = [
-  { ...royalParliamentStory, isLead: true, isBreaking: true },
+  { ...breakingFutsalStory, isLead: true, isBreaking: true },
+  ...otherMoroccoStories,
+  ...AGENCY_ARTICLES,
   ...ARTICLES_DAILY_AUTOPILOT,
-  ...ALL_22_ARAB_TRENDING_ARTICLES.filter(a => a.id !== royalParliamentStory.id && !ARTICLES_DAILY_AUTOPILOT.some(dp => dp.id === a.id)),
+  ...ALL_22_ARAB_TRENDING_ARTICLES.filter(a => a.id !== breakingFutsalStory.id && !ARTICLES_DAILY_AUTOPILOT.some(dp => dp.id === a.id)),
   ...ARTICLES_ARAB_WORLD,
   ...ARTICLES_ARAB_NATIONS_2026,
-  ...otherMoroccoStories,
   ...adjustedOriginals,
-  ...AGENCY_ARTICLES,
   ...ARTICLES_GULF,
   ...ARTICLES_WORLD,
   ...ARTICLES_COOKING

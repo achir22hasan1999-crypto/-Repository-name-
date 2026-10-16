@@ -343,7 +343,7 @@ export const AdminCMS: React.FC<AdminCMSProps> = ({
         <div className="bg-white dark:bg-stone-900 p-4 rounded-lg border border-stone-200 dark:border-stone-800">
           <div className="text-xs text-stone-500 mb-1">إجمالي القراءات</div>
           <div className="text-2xl font-black text-emerald-600 font-mono">
-            {articles.reduce((acc, curr) => acc + curr.readsCount, 0).toLocaleString('ar-MA')}
+            {articles.reduce((acc, curr) => acc + (curr.readsCount || 0), 0).toLocaleString('ar-MA')}
           </div>
         </div>
       </div>
@@ -506,7 +506,7 @@ export const AdminCMS: React.FC<AdminCMSProps> = ({
                           {formatSafeArabicDate(art.publishDate)}
                         </td>
                         <td className="p-3 font-mono text-stone-600 dark:text-stone-400">
-                          {art.readsCount.toLocaleString('ar-MA')}
+                          {(art.readsCount ?? 0).toLocaleString('ar-MA')}
                         </td>
                         <td className="p-3">
                           <div className="flex items-center justify-center gap-1.5">

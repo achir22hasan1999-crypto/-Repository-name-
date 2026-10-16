@@ -223,14 +223,14 @@ export const HomePage: React.FC<HomePageProps> = ({
   const countryArticles = (c: Country) =>
     articles.filter((a) => a.country === c);
 
-  // Priority 1: Mansouri government formation story as the headline lead article
+  // Dynamic headline lead article: prioritize breaking lead article, then isLead, then first
   const leadArticle = 
-    articles.find((a) => a.id === 'mor-mansouri-gov-formation-2026') ||
+    articles.find((a) => a.isLead && a.isBreaking) ||
     articles.find((a) => a.isLead) ||
     articles[0];
 
   const breakingNews = articles.filter((a) => a.isBreaking);
-  const mostReadArticles = [...articles].sort((a, b) => b.readsCount - a.readsCount).slice(0, 5);
+  const mostReadArticles = [...articles].sort((a, b) => (b.readsCount || 0) - (a.readsCount || 0)).slice(0, 5);
   
   // Exclude leadArticle from sidebar latest list to prevent duplication
   const remainingLatest = articles.filter((a) => a.id !== leadArticle?.id);

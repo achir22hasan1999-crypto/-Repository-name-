@@ -28,69 +28,63 @@ import {
 } from './utils/slugUtils';
 import parliamentCoverImg from './assets/images/parliament_mansouri_cover_1790956433850.jpg';
 
-const STORAGE_KEY = 'maghreb_news_articles_v2026_10_08_king_parliament_opening';
+const STORAGE_KEY = 'maghreb_news_articles_v2026_10_16_futsal_breaking';
 
 export default function App() {
   // 1. Persistent State
+  const sanitizeArticle = (art: any, isLeadStory = false): Article => ({
+    ...art,
+    publishDate: art.publishDate || art.publishedAt || "2026-10-16T17:25:00Z",
+    leadImage: art.leadImage || art.imageUrl || "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+    readsCount: typeof art.readsCount === "number" ? art.readsCount : (typeof art.views === "number" ? art.views : 14200),
+    likesCount: typeof art.likesCount === "number" ? art.likesCount : (typeof art.likes === "number" ? art.likes : 480),
+    commentsCount: typeof art.commentsCount === "number" ? art.commentsCount : 18,
+    isBreaking: isLeadStory ? true : Boolean(art.isBreaking),
+    isLead: isLeadStory ? true : Boolean(art.isLead && art.id !== "art-1"),
+    facts: Array.isArray(art.facts) ? art.facts : [],
+    faq: Array.isArray(art.faq) ? art.faq : [],
+    author: art.author || {
+      name: "حمزة بنجلون",
+      role: "محرر الشؤون الرياضية والمغاربية",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+    },
+    source: art.source || "المغرب العربي اليوم",
+    tags: Array.isArray(art.tags) ? art.tags : (Array.isArray(art.keywords) ? art.keywords : ["المغرب", "أخبار"]),
+    seo: art.seo || {
+      metaTitle: art.title,
+      metaDescription: art.summary || art.title,
+      keywords: Array.isArray(art.tags) ? art.tags : ["المغرب", "أخبار"]
+    }
+  });
+
   const [articles, setArticles] = useState<Article[]>(() => {
     try {
-      // Clear legacy storage keys that prevent users from seeing the fresh lead article
-      localStorage.removeItem('maghreb_news_articles');
-      localStorage.removeItem('maghreb_news_articles_v3');
-      localStorage.removeItem('maghreb_news_articles_v4');
-      localStorage.removeItem('maghreb_news_articles_v2026_10_02_wafacash_thumb');
-      localStorage.removeItem('maghreb_news_articles_v2026_10_08_barid_cash');
-
+      localStorage.removeItem("maghreb_news_articles");
+      localStorage.removeItem("maghreb_news_articles_v3");
+      localStorage.removeItem("maghreb_news_articles_v4");
+      localStorage.removeItem("maghreb_news_articles_v2026_10_02_wafacash_thumb");
+      localStorage.removeItem("maghreb_news_articles_v2026_10_08_barid_cash");
+      localStorage.removeItem("maghreb_news_articles_v2026_10_08_king_parliament_opening");
       const saved = localStorage.getItem(STORAGE_KEY);
       const leadInitial = INITIAL_ARTICLES[0];
-
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Remove any old instance of leadInitial from parsed
           const otherArticles = parsed.filter((a: any) => a.id !== leadInitial.id);
           const cachedIds = new Set(parsed.map((a: any) => a.id));
           const missingFromInitial = INITIAL_ARTICLES.filter(a => a.id !== leadInitial.id && !cachedIds.has(a.id));
-
-          // Combine: Lead first, then newly added articles from INITIAL_ARTICLES, then other cached articles
           const combined = [
-            { 
-              ...leadInitial, 
-              isLead: true, 
-              isBreaking: true 
-            },
-            ...missingFromInitial,
-            ...otherArticles
+            sanitizeArticle(leadInitial, true),
+            ...missingFromInitial.map(a => sanitizeArticle(a)),
+            ...otherArticles.map(a => sanitizeArticle(a))
           ];
-
-          return combined.map((art: any) => ({
-            ...art,
-            publishDate: art.publishDate || art.publishedAt || '2026-10-05T08:20:00Z',
-            leadImage: art.leadImage || art.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80',
-            readsCount: typeof art.readsCount === 'number' ? art.readsCount : (art.views || 1200),
-            likesCount: typeof art.likesCount === 'number' ? art.likesCount : (art.likes || 150),
-            commentsCount: typeof art.commentsCount === 'number' ? art.commentsCount : (art.commentsCount || 10),
-            isBreaking: art.id === leadInitial.id ? true : Boolean(art.isBreaking),
-            isLead: art.id === leadInitial.id ? true : Boolean(art.isLead && art.id !== 'art-1'),
-            author: art.author || {
-              name: 'عمر الإدريسي',
-              role: 'محلل الشؤون السياسية والمؤسساتية',
-              avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
-            },
-            source: art.source || 'المغرب العربي اليوم',
-            tags: Array.isArray(art.tags) ? art.tags : ['المغرب', 'أخبار'],
-            seo: art.seo || {
-              metaTitle: art.title,
-              metaDescription: art.summary || art.title,
-              keywords: ['المغرب', 'أخبار']
-            }
-          }));
+          return combined;
         }
       }
     } catch (e) {
       console.error(e);
     }
-    return INITIAL_ARTICLES;
+    return INITIAL_ARTICLES.map((art, idx) => sanitizeArticle(art, idx === 0));
   });
 
   const [comments, setComments] = useState<Comment[]>(() => {

@@ -780,7 +780,7 @@ export const ArticleDetail: React.FC<ArticleDetailProps> = ({
         <div className="flex items-center gap-4 text-xs text-stone-500">
           <span className="flex items-center gap-1">
             <Eye className="w-4 h-4" />
-            <span>{article.readsCount.toLocaleString('ar-MA')} قراءة</span>
+            <span>{(article.readsCount ?? 0).toLocaleString('ar-MA')} قراءة</span>
           </span>
           <span className="flex items-center gap-1">
             <MessageSquare className="w-4 h-4" />

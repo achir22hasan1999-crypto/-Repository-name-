@@ -477,13 +477,13 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ articles, commen
                       {MAGHREB_COUNTRIES.find((c) => c.id === art.country)?.name || art.country}
                     </td>
                     <td className="py-3 px-3 font-mono font-bold text-stone-800 dark:text-stone-200">
-                      {art.readsCount.toLocaleString('ar-MA')}
+                      {(art.readsCount ?? 0).toLocaleString('ar-MA')}
                     </td>
                     <td className="py-3 px-3 font-mono text-red-600">
-                      {art.likesCount.toLocaleString('ar-MA')}
+                      {(art.likesCount ?? 0).toLocaleString('ar-MA')}
                     </td>
                     <td className="py-3 px-3 font-mono text-blue-600">
-                      {art.commentsCount.toLocaleString('ar-MA')}
+                      {(art.commentsCount ?? 0).toLocaleString('ar-MA')}
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-2">

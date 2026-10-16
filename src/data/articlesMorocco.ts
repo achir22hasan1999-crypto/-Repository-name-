@@ -3,8 +3,12 @@ import parliamentCoverImg from '../assets/images/parliament_mansouri_cover_17909
 import coalitionLeadersImg from '../assets/images/mansouri_coalition_leaders_1790956185653.jpg';
 import royalParliamentOpeningImg from '../assets/images/king_parliament_morocco_opening_1791484769185.jpg';
 import { ARTICLES_MOROCCO_AGRI_2026 } from './articlesMoroccoAgri2026';
+import { ARTICLES_MOROCCO_CINEMA } from './articlesMoroccoCinema';
+import { ARTICLES_MOROCCO_FUTSAL } from './articlesMoroccoFutsal';
 
 export const ARTICLES_MOROCCO: Article[] = [
+  ...ARTICLES_MOROCCO_FUTSAL,
+  ...ARTICLES_MOROCCO_CINEMA,
   ...ARTICLES_MOROCCO_AGRI_2026,
   {
     id: 'mor-king-mohammed-vi-opens-parliament-friday-9-october-2026',

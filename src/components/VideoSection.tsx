@@ -108,7 +108,7 @@ export const VideoSection: React.FC<VideoSectionProps> = ({ articles, onOpenArti
                 <div className="text-[10px] text-stone-500 flex items-center gap-2">
                   <span className="flex items-center gap-1">
                     <Eye className="w-2.5 h-2.5" />
-                    {item.readsCount.toLocaleString('ar-MA')}
+                    {(item.readsCount ?? 0).toLocaleString('ar-MA')}
                   </span>
                   <span>·</span>
                   <span>{item.author.name}</span>
