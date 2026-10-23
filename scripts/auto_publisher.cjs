@@ -44,4 +44,22 @@ if (fs.existsSync(targetFile)) {
   process.exit(1);
 }
 
+// 3. Refresh cooking articles (articlesCooking.ts) with current date
+const cookingFile = path.resolve(__dirname, '../src/data/articlesCooking.ts');
+if (fs.existsSync(cookingFile)) {
+  let cookingContent = fs.readFileSync(cookingFile, 'utf8');
+  const todayIso = todayDate.split('T')[0];
+
+  // Refresh publishedAt for top Moroccan culinary recipes
+  const recipeIds = ['cook-1', 'cook-2', 'cook-3', 'cook-4', 'cook-12'];
+  for (const rId of recipeIds) {
+    const reg = new RegExp(`(id:\\s*['"]${rId}['"][\\s\\S]*?publishedAt:\\s*['"])[^'"]+(['"])`);
+    cookingContent = cookingContent.replace(reg, `$1${todayIso}T08:00:00Z$2`);
+  }
+
+  fs.writeFileSync(cookingFile, cookingContent, 'utf8');
+  console.log('Successfully refreshed cooking recipes in articlesCooking.ts with date:', todayIso);
+}
+
 console.log('=== Daily Auto Publisher Finished Successfully ===');
+

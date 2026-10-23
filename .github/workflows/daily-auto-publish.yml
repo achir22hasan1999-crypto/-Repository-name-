@@ -34,11 +34,12 @@ jobs:
         run: |
           git config --global user.name "Auto Publisher Bot"
           git config --global user.email "bot@almaghreb-alyoum.com"
-          git add src/data/articlesDailyAutopilot.ts
+          git add src/data/articlesDailyAutopilot.ts src/data/articlesCooking.ts
           if git diff --staged --quiet; then
             echo "No changes to commit. Articles are up to date."
           else
-            git commit -m "Auto-publish: 5 new human-written trending articles for Morocco, Algeria, Tunisia, Egypt & Saudi Arabia"
+            git commit -m "Auto-publish: Daily trending articles & updated Moroccan cooking recipes [skip ci]"
             git push origin main
             echo "Articles pushed successfully! Vercel deployment triggered automatically."
           fi
+
