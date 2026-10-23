@@ -12,7 +12,7 @@ import { Article } from '../types';
  * Arabic journalistic prose, structured with deep investigative sections,
  * field reports, and fully optimized for Google AdSense & SEO.
  */
-const RAW_DAILY_AUTOPILOT = [
+export const ARTICLES_DAILY_AUTOPILOT: Article[] = [
   // 1. المغرب
   {
     id: "autopilot-morocco-high-speed-rail-marrakech-agadir-water-2026",
@@ -22,7 +22,7 @@ const RAW_DAILY_AUTOPILOT = [
     category: "economy",
     author: "رشيد العلمي - الرباط",
     readTime: "11 دقيقة",
-    publishedAt: "2026-10-18T18:09:47.885Z",
+    publishedAt: "2026-10-23T20:08:05.882Z",
     views: 24850,
     likes: 1240,
     isBreaking: true,
@@ -116,7 +116,7 @@ const RAW_DAILY_AUTOPILOT = [
     category: "economy",
     author: "كريم بلقاسم - الجزائر",
     readTime: "10 دقائق",
-    publishedAt: "2026-10-18T18:09:47.885Z",
+    publishedAt: "2026-10-23T20:08:05.882Z",
     views: 21300,
     likes: 1050,
     isBreaking: false,
@@ -229,7 +229,7 @@ const RAW_DAILY_AUTOPILOT = [
     category: "economy",
     author: "منية الماجري - تونس",
     readTime: "10 دقائق",
-    publishedAt: "2026-10-18T18:09:47.885Z",
+    publishedAt: "2026-10-23T20:08:05.882Z",
     views: 18900,
     likes: 890,
     isBreaking: false,
@@ -327,7 +327,7 @@ const RAW_DAILY_AUTOPILOT = [
     category: "economy",
     author: "أحمد الشناوي - القاهرة",
     readTime: "11 دقيقة",
-    publishedAt: "2026-10-18T18:09:47.885Z",
+    publishedAt: "2026-10-23T20:08:05.882Z",
     views: 28400,
     likes: 1420,
     isBreaking: true,
@@ -426,7 +426,7 @@ const RAW_DAILY_AUTOPILOT = [
     category: "economy",
     author: "سلطان القحطاني - الرياض",
     readTime: "11 دقيقة",
-    publishedAt: "2026-10-18T18:09:47.885Z",
+    publishedAt: "2026-10-23T20:08:05.882Z",
     views: 31200,
     likes: 1680,
     isBreaking: true,
@@ -516,20 +516,5 @@ const RAW_DAILY_AUTOPILOT = [
 
 تثبت المملكة العربية السعودية في عام 2026 أن رؤية 2030 ليست مجرد خطة اقتصادية، بل هي نهضة حضارية شاملة تعيد صياغة المشهد التنموي العالمي، وتضع المواطن السعودي في قلب صناعة مستقبل مشرق ومستدام للأمة والمنطقة والعالم.`
   }
-];
 
-export const ARTICLES_DAILY_AUTOPILOT: Article[] = RAW_DAILY_AUTOPILOT.map((item: any): Article => ({
-  ...item,
-  leadImage: item.imageUrl || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=80",
-  publishDate: item.publishedAt || "2026-10-18T18:09:47.885Z",
-  source: "المغرب العربي اليوم",
-  tags: item.keywords || ["المغرب", "أخبار"],
-  readsCount: item.views || 15000,
-  likesCount: item.likes || 500,
-  commentsCount: 24,
-  author: typeof item.author === 'string' ? {
-    name: item.author,
-    role: "محرر الشؤون الاقتصادية والتنموية",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80"
-  } : item.author
-}));
+];
