@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+public/almaghreb-alyoum-build.zip
+*.tar.gz
+.aistudio/
+public/assets/aistudio/
