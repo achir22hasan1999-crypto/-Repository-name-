@@ -134,6 +134,8 @@ export const DomainExportModal: React.FC<DomainExportModalProps> = ({ isOpen, on
           </button>
         </div>
 
+        {/* Tabs */}
+        <div className="flex border-b border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 p-1.5 gap-1.5 text-xs sm:text-sm font-bold">
           <button
             onClick={() => setActiveTab('github')}
             className={`flex-1 py-2.5 px-2 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer ${
