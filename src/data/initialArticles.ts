@@ -1,0 +1,237 @@
+import { Article, RssFeedItem } from '../types';
+import { ARTICLES_ORIGINAL } from './articlesOriginal';
+import { ARTICLES_MOROCCO } from './articlesMorocco';
+import { ARTICLES_WORLD } from './articlesWorld';
+import { ARTICLES_COOKING } from './articlesCooking';
+import { ARTICLES_GULF } from './articlesGulf';
+import { ARTICLES_ARAB_WORLD } from './articlesArabWorld';
+import { ARTICLES_ARAB_NATIONS_2026 } from './articlesArabNations2026';
+import { ARTICLES_ARAB_MAGHREB_TRENDING } from './articlesArabMaghrebTrending';
+import { ARTICLES_ARAB_MASHREQ_TRENDING } from './articlesArabMashreqTrending';
+import { ARTICLES_ARAB_GULF_TRENDING } from './articlesArabGulfTrending';
+import { ARTICLES_ARAB_NILE_RED_SEA_TRENDING } from './articlesArabNileRedSeaTrending';
+import { ARTICLES_DAILY_AUTOPILOT } from './articlesDailyAutopilot';
+import { AGENCY_ARTICLES } from './articlesAgency';
+import { ARTICLES_TRENDING_BATCH_2026 } from './articlesTrendingBatch2026';
+import { ARTICLES_TRENDING_COMPLETE_BATCH } from './articlesTrendingCompleteBatch';
+import { ARTICLES_MOROCCO_MINURSO_BREAKING } from './articlesMoroccoMinursoBreaking';
+import { ARTICLES_MOROCCO_JORDAN_CONDOLENCES } from './articlesMoroccoJordanCondolences';
+import { ARTICLES_ALGERIA_NIGER_ARMY } from './articlesAlgeriaNigerArmy';
+import { ARTICLES_MOROCCO_UNSC_DRAFT_REVISED } from './articlesMoroccoUnscDraftRevised';
+import { ARTICLES_MOROCCO_FIFA_WORLDCUP_INSPECTION_2030 } from './articlesMoroccoFifaWorldCupInspection2030';
+import { ARTICLES_MESSI_BALLON_DOR_2026 } from './articlesMessiBallonDor2026';
+import { ARTICLES_MBAPPE_CHINA_SPONSORSHIP } from './articlesMbappeChinaSponsorship';
+import { ARTICLES_PUTIN_MANSOURI_SUMMIT } from './articlesPutinMansouriSummit';
+
+// 22 Arab Countries Trending Breaking Articles Collection
+export const ALL_22_ARAB_TRENDING_ARTICLES = [
+  ...ARTICLES_DAILY_AUTOPILOT,
+  ...ARTICLES_ARAB_MAGHREB_TRENDING,
+  ...ARTICLES_ARAB_GULF_TRENDING,
+  ...ARTICLES_ARAB_MASHREQ_TRENDING,
+  ...ARTICLES_ARAB_NILE_RED_SEA_TRENDING
+];
+
+// Lead breaking story #1: US submits revised UNSC draft resolution on Moroccan Sahara
+const revisedUnscDraftStory = ARTICLES_MOROCCO_UNSC_DRAFT_REVISED[0];
+// Story #2: US Ambassador confirms end of MINURSO military mission in Moroccan Sahara
+const breakingMinursoStory = ARTICLES_MOROCCO_MINURSO_BREAKING[0];
+// Trending story #3: Morocco 7th in FIFA ranking
+const breakingFifaStory = ARTICLES_MOROCCO.find(a => a.id === 'mor-fifa-ranking-seventh-place-october-2026') || ARTICLES_MOROCCO[0];
+const otherMoroccoStories = ARTICLES_MOROCCO.filter(a => a.id !== breakingFifaStory.id);
+const adjustedOriginals = ARTICLES_ORIGINAL.map(a => a.id === 'art-1' ? { ...a, isLead: false } : a);
+
+export const INITIAL_ARTICLES: Article[] = [
+  { ...revisedUnscDraftStory, isLead: true, isBreaking: true },
+  ...ARTICLES_PUTIN_MANSOURI_SUMMIT,
+  { ...breakingMinursoStory, isLead: false, isBreaking: true },
+  ...ARTICLES_MOROCCO_JORDAN_CONDOLENCES,
+  ...ARTICLES_ALGERIA_NIGER_ARMY,
+  ...ARTICLES_MOROCCO_FIFA_WORLDCUP_INSPECTION_2030,
+  ...ARTICLES_MESSI_BALLON_DOR_2026,
+  ...ARTICLES_MBAPPE_CHINA_SPONSORSHIP,
+  { ...breakingFifaStory, isLead: false, isBreaking: true },
+  ...ARTICLES_TRENDING_COMPLETE_BATCH,
+  ...ARTICLES_TRENDING_BATCH_2026,
+  ...otherMoroccoStories,
+  ...AGENCY_ARTICLES,
+  ...ARTICLES_DAILY_AUTOPILOT,
+  ...ALL_22_ARAB_TRENDING_ARTICLES.filter(a => a.id !== breakingFifaStory.id && !ARTICLES_DAILY_AUTOPILOT.some(dp => dp.id === a.id)),
+  ...ARTICLES_ARAB_WORLD,
+  ...ARTICLES_ARAB_NATIONS_2026,
+  ...adjustedOriginals,
+  ...ARTICLES_GULF,
+  ...ARTICLES_WORLD,
+  ...ARTICLES_COOKING
+];
+
+export const INITIAL_COMMENTS = [
+  {
+    id: 'comm-1',
+    articleId: 'mor-1',
+    authorName: 'سفيان الفاسي',
+    country: 'المغرب',
+    date: '2026-09-29T11:20:00Z',
+    content: 'خطوة استراتيجية عملاقة تضع المغرب في مقدمة دول العالم في تصدير الطاقة النظيفة. الأقاليم الجنوبية تملك إمكانيات طبيعية هائلة للمشاريع الخضراء.',
+    likes: 18
+  },
+  {
+    id: 'comm-2',
+    articleId: 'mor-2',
+    authorName: 'مريم أكادير',
+    country: 'المغرب',
+    date: '2026-09-29T09:40:00Z',
+    content: 'وصول قطار البراق إلى مراكش وأكادير حلم كبير لكل سكان سوس-ماسة. سيربط شمال وجنوب المملكة في وقت قياسي ويعطي دفعة سياحية واقتصادية كبرى.',
+    likes: 24
+  },
+  {
+    id: 'comm-3',
+    articleId: 'cook-1',
+    authorName: 'فاطمة الزهراء الرباطي',
+    country: 'المغرب',
+    date: '2026-09-29T10:15:00Z',
+    content: 'تبارك الله عليك وصفة متكاملة وشارحة لأدق تفاصيل التفوير الثلاثي والسمن الحار. قصرية الكسكس نهار الجمعة تجمع العائلة وتفرح الصغار والكبار.',
+    likes: 31
+  },
+  {
+    id: 'comm-4',
+    articleId: 'wld-1',
+    authorName: 'د. خالد بنسعيد',
+    country: 'المغرب',
+    date: '2026-09-29T12:00:00Z',
+    content: 'مقال دقيق وتحليلي رفيع المستوى حول نماذج الاستدلال في الذكاء الاصطناعي. فعلاً التحول الحقيقي هو الانتقال من الحفظ إلى التفكير المنطقي والبحث العلمي.',
+    likes: 15
+  }
+];
+
+export const INITIAL_RSS_FEED: RssFeedItem[] = [
+  {
+    id: 'rss-1',
+    title: 'اتفاقية أكاديمية مغاربية لدعم أبحاث الزراعة الذكية والتكيف المناخي',
+    source: 'وكالة تونس إفريقيا للأنباء (وات)',
+    sourceAgency: 'TAP',
+    country: 'tunisia',
+    category: 'society',
+    originalSummary: 'أعلنت جامعة القيروان بتونس عن إبرام اتفاق ثلاثي مع جامعتي محمد الخامس بالرباط ومصطفى بن بولعيد بباتنة لتعزيز البحوث المشتركة في الزراعة المستدامة والبيوتكنولوجيا.',
+    editorialSummary: 'في إطار تعزيز الدبلوماسية الأكاديمية المغاربية، وقعت جامعات من تونس والمغرب والجزائر اتفاقية لتبادل الأساتذة والطلبة الباحثين في مجالات التغير المناخي والأمن الغذائي، مع إنشاء منصة بحثية مشتركة.',
+    date: '2026-09-29T09:00:00Z',
+    originalUrl: 'https://tap.info.tn/academic-cooperation',
+    imageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
+    status: 'pending'
+  },
+  {
+    id: 'rss-2',
+    title: 'المكتب الوطني للصيد بموريتانيا يعلن ارتفاع صادرات الأسماك الطازجة بنسبة 18%',
+    source: 'الوكالة الموريتانية للأنباء (وما)',
+    sourceAgency: 'AMI',
+    country: 'mauritania',
+    category: 'economy',
+    originalSummary: 'أفادت معطيات رسمية صادرة عن ميناء نواذيبو المستقل بتسجيل ارتفاع قياسي في كميات الأسماك المصدرة إلى الأسواق الإفريقية والأوروبية مع افتتاح أرصفة تفريغ حديثة.',
+    editorialSummary: 'سجلت الصادرات السمكية الموريتانية قفزة نوعية بلغت 18% بفضل الاستثمارات الحديثة في أسطول التبريد والموانئ الساحلية، مما عزز مكانة موريتانيا كمورد رئيسي للبروتين البحري النظيف إقليمياً.',
+    date: '2026-09-29T08:30:00Z',
+    originalUrl: 'https://ami.mr/fisheries-growth',
+    imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
+    status: 'pending'
+  },
+  {
+    id: 'rss-3',
+    title: 'افتتاح معرض الجزائر الدولي للمنتجات الحرفية والنسيج التقليدي بمشاركة مغاربية',
+    source: 'وكالة الأنباء الجزائرية (واج)',
+    sourceAgency: 'APS',
+    country: 'algeria',
+    category: 'culture',
+    originalSummary: 'شهد قصر المعارض بالصنوبر البحري في الجزائر العاصمة انطلاق الصالون الدولي للصناعة التقليدية والحرف بحضور أكثر من 400 حرفي من مختلف ولايات الوطن ووفود شقيقة.',
+    editorialSummary: 'تحتفي الجزائر بثراء الموروث الحرفي بمشاركة نخبة من صناع الفخار والزربية التقليدية من دول المغرب العربي، في تظاهرة تهدف إلى حماية الملكية الفكرية للحرف التراثية ودعم الاقتصاد المنزلي.',
+    date: '2026-09-29T08:00:00Z',
+    originalUrl: 'https://aps.dz/artisan-expo-algiers',
+    imageUrl: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&w=1200&q=80',
+    status: 'pending'
+  },
+  {
+    id: 'rss-4',
+    title: 'تأهيل مطار بنينا الدولي في بنغازي ومطار معيتيقة بطرابلس بأحدث أجهزة الملاحة',
+    source: 'وكالة الأنباء الليبية (وال)',
+    sourceAgency: 'LANA',
+    country: 'libya',
+    category: 'libya',
+    originalSummary: 'أعلنت مصلحة الطيران المدني الليبية اكتمال تركيب منظومات الرادار وأجهزة الهبوط الآلي في مطاري بنينا ومعيتيقة، مما يمهد لعودة الرحلات المباشرة مع عواصم أوروبية وإفريقية.',
+    editorialSummary: 'خطوة نوعية تعيد ربط الأجواء الليبية بالعالم، مع اكتمال تحديث البنية التحتية الملاحية في مطاري بنغازي وطرابلس وفق أعلى معايير منظمة الطيران المدني الدولي (إيكاو).',
+    date: '2026-09-29T07:20:00Z',
+    originalUrl: 'https://lana.gov.ly/aviation-modernization',
+    imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80',
+    status: 'pending'
+  },
+  {
+    id: 'rss-5',
+    title: 'المغرب يطلق القمر الاصطناعي البيئي لرصد الموارد المائية والتصحر في حوض المتوسط',
+    source: 'وكالة المغرب العربي للأنباء (ومع)',
+    sourceAgency: 'MAP',
+    country: 'morocco',
+    category: 'tech',
+    originalSummary: 'أعلن المركز الملكي للاستشعار البعدي الفضائي نجاح إطلاق القمر الاصطناعي البيئي المخصص لمراقبة رطوبة التربة والغابات وحركة السحب والأمطار على مدار الساعة.',
+    editorialSummary: 'في إنجاز علمي عربي وإفريقي، يضع المغرب بيانات فضائية دقيقة رهن إشارة مراكز الرصد والبحث العلمي المغاربية لمتابعة تداعيات الجفاف وتدبير الموارد المائية بكفاءة عالية.',
+    date: '2026-09-29T06:50:00Z',
+    originalUrl: 'https://mapnews.ma/space-environmental-satellite',
+    imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+    status: 'pending'
+  }
+];
+
+export const CATEGORIES_CONFIG = [
+  { id: 'all', label: 'الرئيسية', icon: 'Home' },
+  { id: 'morocco', label: 'أخبار المغرب', flag: '🇲🇦', icon: 'Globe' },
+  { id: 'gulf', label: 'دول الخليج العربي', flag: '🌴', icon: 'Globe' },
+  { id: 'world', label: 'أخبار العالم', icon: 'Compass' },
+  { id: 'economy', label: 'اقتصاد وأعمال', icon: 'TrendingUp' },
+  { id: 'agency', label: 'كيف أنشئ وكالة', flag: '💼', icon: 'Briefcase' },
+  { id: 'cooking', label: 'طبخ ووصفات', icon: 'UtensilsCrossed' },
+  { id: 'ai', label: 'الذكاء الاصطناعي', icon: 'Bot' },
+  { id: 'tech', label: 'تكنولوجيا', icon: 'Cpu' },
+  { id: 'sports', label: 'رياضة', icon: 'Trophy' },
+  { id: 'society', label: 'مجتمع', icon: 'Users' },
+  { id: 'culture', label: 'ثقافة', icon: 'BookOpen' },
+  { id: 'video', label: 'فيديو', icon: 'PlayCircle' },
+  { id: 'variety', label: 'منوعات', icon: 'Sparkles' }
+];
+
+export const MAGHREB_COUNTRIES = [
+  { id: 'morocco', name: 'المغرب', shortName: 'المغرب', flag: '🇲🇦', capital: 'الرباط', currency: 'درهم مغربي (MAD)' },
+  { id: 'algeria', name: 'الجزائر', shortName: 'الجزائر', flag: '🇩🇿', capital: 'الجزائر', currency: 'دينار جزائري (DZD)' },
+  { id: 'tunisia', name: 'تونس', shortName: 'تونس', flag: '🇹🇳', capital: 'تونس', currency: 'دينار تونسي (TND)' },
+  { id: 'libya', name: 'ليبيا', shortName: 'ليبيا', flag: '🇱🇾', capital: 'طرابلس', currency: 'دينار ليبي (LYD)' },
+  { id: 'mauritania', name: 'موريتانيا', shortName: 'موريتانيا', flag: '🇲🇷', capital: 'نواكشوط', currency: 'أوقية موريتانية (MRU)' }
+];
+
+export const GULF_COUNTRIES = [
+  { id: 'saudi', name: 'المملكة العربية السعودية', shortName: 'السعودية', flag: '🇸🇦', capital: 'الرياض', currency: 'ريال سعودي (SAR)' },
+  { id: 'uae', name: 'الإمارات العربية المتحدة', shortName: 'الإمارات', flag: '🇦🇪', capital: 'أبوظبي', currency: 'درهم إماراتي (AED)' },
+  { id: 'qatar', name: 'دولة قطر', shortName: 'قطر', flag: '🇶🇦', capital: 'الدوحة', currency: 'ريال قطري (QAR)' },
+  { id: 'kuwait', name: 'دولة الكويت', shortName: 'الكويت', flag: '🇰🇼', capital: 'مدينة الكويت', currency: 'دينار كويتي (KWD)' },
+  { id: 'oman', name: 'سلطنة عمان', shortName: 'عمان', flag: '🇴🇲', capital: 'مسقط', currency: 'ريال عماني (OMR)' },
+  { id: 'bahrain', name: 'مملكة البحرين', shortName: 'البحرين', flag: '🇧🇭', capital: 'المنامة', currency: 'دينار بحريني (BHD)' }
+];
+
+export const MASHREQ_COUNTRIES = [
+  { id: 'iraq', name: 'جمهورية العراق', shortName: 'العراق', flag: '🇮🇶', capital: 'بغداد', currency: 'دينار عراقي (IQD)' },
+  { id: 'jordan', name: 'المملكة الأردنية الهاشمية', shortName: 'الأردن', flag: '🇯🇴', capital: 'عمان', currency: 'دينار أردني (JOD)' },
+  { id: 'syria', name: 'الجمهورية العربية السورية', shortName: 'سوريا', flag: '🇸🇾', capital: 'دمشق', currency: 'ليرة سورية (SYP)' },
+  { id: 'lebanon', name: 'الجمهورية اللبنانية', shortName: 'لبنان', flag: '🇱🇧', capital: 'بيروت', currency: 'ليرة لبنانية (LBP)' },
+  { id: 'palestine', name: 'دولة فلسطين', shortName: 'فلسطين', flag: '🇵🇸', capital: 'القدس الشريف', currency: 'شيكل / دينار' }
+];
+
+export const NILE_AND_HORN_COUNTRIES = [
+  { id: 'egypt', name: 'جمهورية مصر العربية', shortName: 'مصر', flag: '🇪🇬', capital: 'القاهرة', currency: 'جنيه مصري (EGP)' },
+  { id: 'sudan', name: 'جمهورية السودان', shortName: 'السودان', flag: '🇸🇩', capital: 'بورتسودان / الخرطوم', currency: 'جنيه سوداني (SDG)' },
+  { id: 'somalia', name: 'جمهورية الصومال الفيدرالية', shortName: 'الصومال', flag: '🇸🇴', capital: 'مقديشو', currency: 'شلن صومالي (SOS)' },
+  { id: 'djibouti', name: 'جمهورية جيبوتي', shortName: 'جيبوتي', flag: '🇩🇯', capital: 'جيبوتي', currency: 'فرنك جيبوتي (DJF)' },
+  { id: 'comoros', name: 'جمهورية جزر القمر الاتحادية', shortName: 'جزر القمر', flag: '🇰🇲', capital: 'موروني', currency: 'فرنك قمري (KMF)' },
+  { id: 'yemen', name: 'الجمهورية اليمنية', shortName: 'اليمن', flag: '🇾🇪', capital: 'صنعاء / عدن', currency: 'ريال يمني (YER)' }
+];
+
+export const ARAB_COUNTRIES = [
+  ...MAGHREB_COUNTRIES,
+  ...GULF_COUNTRIES,
+  ...MASHREQ_COUNTRIES,
+  ...NILE_AND_HORN_COUNTRIES
+];
+

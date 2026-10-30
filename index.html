@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        function shouldSuppress(err) {
+          if (!err) return false;
+          var msg = String((err && (err.message || err.reason || err)) || '');
+          return (
+            msg.indexOf('MetaMask') !== -1 ||
+            msg.indexOf('ethereum') !== -1 ||
+            msg.indexOf('wallet') !== -1 ||
+            msg.indexOf('chrome-extension') !== -1 ||
+            msg.indexOf('QuotaExceededError') !== -1 ||
+            msg.indexOf('exceeded the quota') !== -1 ||
+            msg.indexOf('quota') !== -1
+          );
+        }
+        window.addEventListener('unhandledrejection', function(event) {
+          if (shouldSuppress(event.reason)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return false;
+          }
+        }, true);
+        window.addEventListener('error', function(event) {
+          if (shouldSuppress(event.error || event.message)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return false;
+          }
+        }, true);
+      })();
+    </script>
+    <title>المغرب العربي اليوم | أخبار المغرب العربي والعالم لحظة بلحظة</title>
+    <meta name="description" content="بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة برؤية استقصائية وتحليلية رصينة." />
+    <meta name="keywords" content="أخبار المغرب, أخبار الجزائر, أخبار تونس, أخبار ليبيا, أخبار موريتانيا, المغرب العربي, اقتصاد, رياضة, فوتسال, تكنولوجيا, أحداث الساعة" />
+    <meta name="author" content="المغرب العربي اليوم" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://www.almaghreb-alyoum.com/" />
+    <meta name="google-site-verification" content="u-4c-4qDMjBWf0xwO-5DoomcZdwMGdjlK-hTJYwGvcU" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    <meta property="og:site_name" content="المغرب العربي اليوم" />
+    <meta property="og:title" content="المغرب العربي اليوم | أخبار المغرب العربي والعالم لحظة بلحظة" />
+    <meta property="og:description" content="بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة." />
+    <meta property="og:url" content="https://www.almaghreb-alyoum.com/" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="المغرب العربي اليوم | أخبار المغرب العربي والعالم لحظة بلحظة" />
+    <meta name="twitter:description" content="بوابة إخبارية شاملة ومستقلة تغطي مستجدات المغرب، الجزائر، تونس، ليبيا، موريتانيا والعالم لحظة بلحظة." />
+    <meta name="twitter:url" content="https://www.almaghreb-alyoum.com/" />
+
+    <!-- Google Fonts for Arabic Journalism: Cairo for Headlines, Tajawal & Readex Pro for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Schema.org NewsMediaOrganization Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "name": "المغرب العربي اليوم",
+      "alternateName": "Al Maghreb Al Arabi Al Youm",
+      "url": "https://www.almaghreb-alyoum.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.almaghreb-alyoum.com/logo.png",
+        "width": 600,
+        "height": 60
+      },
+      "slogan": "أخبار المغرب العربي والعالم لحظة بلحظة",
+      "sameAs": [
+        "https://facebook.com",
+        "https://x.com",
+        "https://youtube.com",
+        "https://t.me"
+      ],
+      "publishingPrinciples": "https://www.almaghreb-alyoum.com/editorial-policy",
+      "correctionsPolicy": "https://www.almaghreb-alyoum.com/corrections",
+      "diversityPolicy": "https://www.almaghreb-alyoum.com/about"
+    }
+    </script>
+
+    <!-- Google AdSense Official Script & Account Verification -->
+    <meta name="google-adsense-account" content="ca-pub-1551440525608341" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551440525608341" crossorigin="anonymous"></script>
+  </head>
+  <body class="bg-stone-50 text-stone-900 antialiased selection:bg-red-600 selection:text-white">
+    <div id="root">
+      <!-- Semantic Static Pre-rendered Content for Crawlers & AdSense Verification Bots -->
+      <header style="background:#fff;border-bottom:2px solid #b91c1c;padding:1rem 1.5rem;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <h1 style="font-family:'Cairo',sans-serif;font-size:1.75rem;font-weight:900;color:#b91c1c;margin:0;">
+              <span style="color:#0c0a09;">المغرب العربي</span> اليوم
+            </h1>
+            <p style="font-size:0.85rem;color:#78716c;margin:0;">صحيفة إخبارية رقمية شاملة - أخبار المغرب والمنطقة المغاربية والعالم لحظة بلحظة</p>
+          </div>
+          <nav style="display:flex;gap:1rem;flex-wrap:wrap;font-weight:700;font-size:0.9rem;">
+            <a href="/" style="color:#b91c1c;text-decoration:none;">الرئيسية</a>
+            <a href="/?country=morocco" style="color:#292524;text-decoration:none;">المغرب</a>
+            <a href="/?country=algeria" style="color:#292524;text-decoration:none;">الجزائر</a>
+            <a href="/?country=tunisia" style="color:#292524;text-decoration:none;">تونس</a>
+            <a href="/?country=libya" style="color:#292524;text-decoration:none;">ليبيا</a>
+            <a href="/?country=mauritania" style="color:#292524;text-decoration:none;">موريتانيا</a>
+            <a href="/?category=economy" style="color:#292524;text-decoration:none;">اقتصاد</a>
+            <a href="/?category=sports" style="color:#292524;text-decoration:none;">رياضة</a>
+            <a href="/about" style="color:#292524;text-decoration:none;">من نحن</a>
+            <a href="/privacy" style="color:#292524;text-decoration:none;">الخصوصية</a>
+            <a href="/contact" style="color:#292524;text-decoration:none;">اتصل بنا</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Breaking News Ticker -->
+      <div style="background:#0c0a09;color:#fff;padding:0.6rem 1.5rem;font-size:0.9rem;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;">
+          <span style="background:#b91c1c;color:#fff;padding:0.2rem 0.6rem;font-weight:bold;border-radius:4px;font-size:0.8rem;">عاجل</span>
+          <span style="color:#f5f5f4;">فوتسال المغرب يكتسح زامبيا بسباعية نظيفة ويبلغ المربع الذهبي لكأس أمم إفريقيا 2026 وسط إشادة دولية</span>
+        </div>
+      </div>
+
+      <!-- Main News Content Body -->
+      <main style="max-width:1200px;margin:2rem auto;padding:0 1.5rem;">
+        <!-- Lead Breaking Article -->
+        <article style="background:#fff;border-radius:12px;padding:2rem;margin-bottom:2.5rem;border:1px solid #e7e5e4;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+          <span style="color:#b91c1c;font-weight:bold;font-size:0.9rem;">تغطية رياضية خاصة | كأس أمم إفريقيا داخل القاعة</span>
+          <h2 style="font-family:'Cairo',sans-serif;font-size:2rem;font-weight:900;color:#0c0a09;margin:0.75rem 0 1rem;line-height:1.4;">
+            اكتساح مغربي تاريخي: أسود الفوتسال يبلغون نصف نهائي كأس إفريقيا بسباعية نظيفة في شباك زامبيا
+          </h2>
+          <div style="font-size:0.85rem;color:#78716c;margin-bottom:1.5rem;">
+            بقلم: هيئة التحرير الرياضية | الرباط - قصر الرياضات بالمركب الرياضي الأمير مولاي عبد الله | 20 أكتوبر 2026
+          </div>
+          <p style="font-size:1.1rem;line-height:1.9;color:#292524;margin-bottom:1.25rem;">
+            واصل المنتخب الوطني المغربي لكرة القدم داخل القاعة (الفوتسال) سلسلة عروضه القوية وهيمنته القارية المطلقة، بعدما حقق فوزاً كاسحاً ومستحقاً على نظيره الزامبي بنتيجة 7-0، في المباراة الحاسمة التي جمعتهما بقصر الرياضات التابع للمركب الرياضي الأمير مولاي عبد الله بالعاصمة الرباط، ليحسم تأهله رسمياً إلى نصف نهائي بطولة كأس أمم إفريقيا للمرة الرابعة توالياً.
+          </p>
+          <p style="font-size:1.05rem;line-height:1.8;color:#44403c;margin-bottom:1.25rem;">
+            وفرضت كتيبة المدرب الوطني هشام الدكيك سيطرة ميدانية كاملة منذ الدقائق الأولى من اللقاء، حيث أظهر اللاعبون تنظيماً تكتيكياً محكماً وفاعلية هجومية باهرة. وبرز النجم إدريس الرايس فني بشكل لافت بتسجيله "سوبر هاتريك" تاريخي (أربعة أهداف)، فيما أضاف سفيان المسرار وأنس العيان وإسماعيل أمزال بقية الأهداف وسط تفاعل جماهيري مغربي منقطع النظير ملأ مدرجات القاعة عن آخرها.
+          </p>
+          <p style="font-size:1.05rem;line-height:1.8;color:#44403c;">
+            وبهذا الانتصار، يرفع المنتخب المغربي رصيده إلى 9 نقاط بالعلامة الكاملة في صدارة المجموعة، مؤكداً استعداده للمنافسة على التتويج باللقب القاري وحجز بطاقة التأهل إلى نهائيات كأس العالم للفوتسال، وسط إشادة واسعة من الاتحاد الإفريقي للعبة (CAF) بالبنية التحتية الرياضية العالية التي وفرتها المملكة المغربية لاستضافة هذه النسخة الاستثنائية.
+          </p>
+        </article>
+
+        <!-- Section: Top Analytical Reports Across the Maghreb -->
+        <section style="margin-bottom:3rem;">
+          <h2 style="font-family:'Cairo',sans-serif;font-size:1.6rem;font-weight:900;color:#0c0a09;border-bottom:3px solid #b91c1c;padding-bottom:0.5rem;margin-bottom:1.5rem;">
+            تقارير وتحليلات الشأن المغاربي والعربي
+          </h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
+            <!-- Article 1: Morocco Economy -->
+            <div style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">المغرب | مشاريع استراتيجية</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                البرلمان المغربي يفتتح دورته بتوجيهات ملكية سامية لتسريع أوراش مونديال 2030 وتحديث الحماية الاجتماعية
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                افتتح جلالة الملك محمد السادس الدورة الأولى من السنة التشريعية بتأكيد الالتزام باستكمال برامج التنمية الشاملة، وتعزيز تدبير الموارد المائية، وإطلاق استثمارات لوجستية ضخمة استعداداً لاستضافة كأس العالم 2030 المشترك مع إسبانيا والبرتغال.
+              </p>
+            </div>
+
+            <!-- Article 2: Algeria Energy -->
+            <div style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">الجزائر | طاقة وصناعة</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                الجزائر تعزز مكانتها الطاقية عبر مشاريع الهيدروجين الأخضر ومضاعفة صادرات الحديد من منجم غار جبيلات
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                تشهد البنية التحتية الجزائرية طفرة تنموية مع تقدم مشروع الممر الجنوبي للهيدروجين الأخضر المتجه نحو ألمانيا والنمسا وإيطاليا، توازياً مع استكمال خط السكة الحديدية المنجمية لنقل خامات الحديد نحو موانئ وهران ومستغانم.
+              </p>
+            </div>
+
+            <!-- Article 3: Tunisia AI Agriculture -->
+            <div style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">تونس | اقتصاد رقمي وفلاحة</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                تونس تحقق عوائد قياسية من صادرات زيت الزيتون وتدمج خوارزميات الذكاء الاصطناعي في الري الذكي
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                سجلت تونس قفزة تاريخية في عائدات العملة الصعبة عبر تصدير زيت الزيتون البيولوجي الممتاز، بالتزامن مع إطلاق وزارة الفلاحة برامج رقمية وطنية تعتمد على الأقمار الاصطناعية والاستشعار عن بعد لترشيد استهلاك المياه في ولايات الوسط والجنوب.
+              </p>
+            </div>
+
+            <!-- Article 4: Libya Reconstruction -->
+            <div style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">ليبيا | إعادة الإعمار</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                استقرار إنتاج النفط الليبي عند 1.5 مليون برميل يومياً وتدشين محطات الطاقة الشمسية ببنغازي ومصراتة
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                أعلنت المؤسسة الوطنية للنفط في ليبيا انتظام معدلات الإنتاج والتصدير نحو الأسواق الأوروبية، متزامنة مع تنفيذ مشاريع عملاقة لتوليد الطاقة الشمسية في سرت وغدامس بإشراف شركات عالمية.
+              </p>
+            </div>
+
+            <!-- Article 5: Mauritania Green Hydrogen -->
+            <div style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">موريتانيا | الطاقة النظيفة</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                موريتانيا تخطو نحو قيادة التحول الطاقي الإفريقي بمشروع أمان للهيدروجين الأخضر واستخراج الغاز المشترك
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                تحرز نواكشوط تقدماً كبيراً في استقطاب الاستثمارات الدولية بفضل حقل السلحفاة آحميم الكبير للغاز الطبيعي المسال، إلى جانب اتفاقيات تصنيع الصلب الأخضر في نواذيبو بالشراكة مع الشركاء الأوروبيين.
+              </p>
+            </div>
+
+            <!-- Article 6: Arab & Gulf Cooperation -->
+            <div style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">الخليج العربي | رؤية 2030</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                المملكة العربية السعودية والإمارات توسعان الشراكات الاقتصادية المغاربية في مجالات الذكاء الاصطناعي والموانئ
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                أطلقت الصناديق السيادية الخليجية جولات تمويلية جديدة لربط موانئ طنجة المتوسط والدار البيضاء بشبكات التجارة البحرية واللوجستيات الذكية، تأكيداً للعمق الاستراتيجي والتعاون العربي المشترك.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: High-Value Financial & Entrepreneurship Guides for Morocco 2026 -->
+        <section style="margin-bottom:3rem;">
+          <h2 style="font-family:'Cairo',sans-serif;font-size:1.6rem;font-weight:900;color:#0c0a09;border-bottom:3px solid #b91c1c;padding-bottom:0.5rem;margin-bottom:1.5rem;">
+            أدلة الاستثمار وريادة الأعمال ومشاريع الخدمات المالية بالمغرب 2026
+          </h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
+            <!-- Guide 1: Cash Plus Cost & Budget -->
+            <article style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">دليل مالي متخصص | كاش بلوس 2026</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                <a href="/article/how-much-does-it-cost-to-open-cash-plus-agency-morocco-2026-budget-guide" style="color:#0c0a09;text-decoration:none;">
+                  كم يكلف فتح وكالة كاش بلوس في المغرب سنة 2026؟ دليل الميزانية ورأس المال والأرباح
+                </a>
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                دراسة مالية شاملة وتفصيلية لتقدير تكاليف كراء المحل التجاري، مصاريف التهيئة والديكور، الأجهزة والأنظمة الأمنية المعتمدة، حجم السيولة اليومية المطلوبة، ونموذج احتساب العمولات والأرباح الصافية.
+              </p>
+              <div style="margin-top:1rem;">
+                <a href="/article/how-much-does-it-cost-to-open-cash-plus-agency-morocco-2026-budget-guide" style="color:#b91c1c;font-weight:bold;text-decoration:none;font-size:0.9rem;">
+                  قراءة الدليل المالي الكامل &larr;
+                </a>
+              </div>
+            </article>
+
+            <!-- Guide 2: Cash Plus Application Steps & Documents -->
+            <article style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">دليل الشراكة والتقديم | كاش بلوس 2026</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                <a href="/article/how-to-start-cash-plus-agency-morocco-2026-guide" style="color:#0c0a09;text-decoration:none;">
+                  كيفية فتح وكالة كاش بلوس في المغرب 2026: الشروط والوثائق وخطوات التقديم
+                </a>
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                شرح الخطوات العملية الست لتقديم طلب فتح وكالة كاش بلوس عبر البوابة الرسمية، معايير اختيار المحل التجاري المناسب، الوثائق الإدارية والتجارية المطلوبة، وتفاصيل صيغة «خدمات» للمحلات القائمة.
+              </p>
+              <div style="margin-top:1rem;">
+                <a href="/article/how-to-start-cash-plus-agency-morocco-2026-guide" style="color:#b91c1c;font-weight:bold;text-decoration:none;font-size:0.9rem;">
+                  قراءة دليل الشروط والوثائق &larr;
+                </a>
+              </div>
+            </article>
+
+            <!-- Guide 3: Chaabi Cash Agency -->
+            <article style="background:#fff;border-radius:8px;padding:1.5rem;border:1px solid #e7e5e4;">
+              <span style="font-size:0.8rem;font-weight:bold;color:#b91c1c;">دليل مؤسسات الأداء | الشعبي كاش</span>
+              <h3 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#0c0a09;margin:0.5rem 0;">
+                <a href="/article/how-to-start-chaabi-cash-agency-morocco-2026-guide" style="color:#0c0a09;text-decoration:none;">
+                  كيفية إنشاء وكالة الشعبي كاش في المغرب: الشروط والخطوات وطريقة تقديم الطلب
+                </a>
+              </h3>
+              <p style="font-size:0.95rem;color:#57534e;line-height:1.7;">
+                دليل كامل للانضمام لشبكة الشعبي كاش التابعة لمجموعة البنك الشعبي: شروط الموقع التجاري، تجهيز المحل وفق المعايير، وخدمات الأداء واستخلاص الفواتير وتوزيع الأرباح.
+              </p>
+              <div style="margin-top:1rem;">
+                <a href="/article/how-to-start-chaabi-cash-agency-morocco-2026-guide" style="color:#b91c1c;font-weight:bold;text-decoration:none;font-size:0.9rem;">
+                  قراءة دليل الشعبي كاش &larr;
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Institutional Trust & Quality Badge for AdSense -->
+        <section style="background:#fff;border-radius:8px;padding:1.75rem;border-right:5px solid #b91c1c;margin-bottom:2.5rem;">
+          <h3 style="font-family:'Cairo',sans-serif;font-size:1.3rem;font-weight:800;color:#0c0a09;margin-bottom:0.75rem;">
+            عن جريدة المغرب العربي اليوم وميثاق النزاهة التحريرية
+          </h3>
+          <p style="font-size:1rem;color:#44403c;line-height:1.8;margin:0;">
+            تلتزم جريدة "المغرب العربي اليوم" (almaghreb-alyoum.com) بتقديم مادة صحفية أصلية وغير منسوخة، مستندة إلى مصادر أولية وبيانات إحصائية رسمية. تحرص هيئة التحرير على الفصل الكامل بين الأخبار والآراء، وتلتزم بحق الرد والتصحيح الفوري وفق القوانين المنظمة للصحافة والنشر بالمملكة المغربية والمعايير العالمية المعتمدة لبرنامج ناشري Google AdSense.
+          </p>
+        </section>
+      </main>
+
+      <!-- Institutional Footer -->
+      <footer style="background:#1c1917;color:#a8a29e;padding:2.5rem 1.5rem;font-size:0.9rem;text-align:center;">
+        <div style="max-width:1200px;margin:0 auto;">
+          <p style="font-weight:bold;color:#fff;font-size:1.1rem;margin-bottom:0.75rem;">
+            جريدة المغرب العربي اليوم © 2026 - جميع الحقوق محفوظة
+          </p>
+          <p style="margin-bottom:1.5rem;font-size:0.85rem;color:#78716c;">
+            بوابة إخبارية رقمية مستقلة | الرباط - المملكة المغربية | المدير المسؤول: حسن عاشير
+          </p>
+          <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1.25rem;font-weight:600;">
+            <a href="/" style="color:#d6d3d1;text-decoration:none;">الرئيسية</a>
+            <a href="/about" style="color:#d6d3d1;text-decoration:none;">من نحن</a>
+            <a href="/editorial-policy" style="color:#d6d3d1;text-decoration:none;">السياسة التحريرية</a>
+            <a href="/corrections" style="color:#d6d3d1;text-decoration:none;">سياسة التصحيح</a>
+            <a href="/terms" style="color:#d6d3d1;text-decoration:none;">شروط الاستخدام</a>
+            <a href="/privacy" style="color:#f87171;text-decoration:none;">سياسة الخصوصية</a>
+            <a href="/contact" style="color:#d6d3d1;text-decoration:none;">اتصل بنا</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
