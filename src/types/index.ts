@@ -206,5 +206,6 @@ export type ViewMode =
   | 'copyright'
   | 'author'
   | 'seo-tools'
+  | 'tools'
   | '404';
 

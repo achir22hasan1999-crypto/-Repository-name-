@@ -21,6 +21,7 @@ import { ArticleCard } from './ArticleCard';
 import { AdSenseBanner } from './AdSenseBanner';
 import { VideoSection } from './VideoSection';
 import { GulfNewsSection } from './GulfNewsSection';
+import { InteractiveToolsSection } from './InteractiveToolsSection';
 import { CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } from '../data/initialArticles';
 
 interface HomePageProps {
@@ -733,6 +734,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                   />
                 ))}
               </div>
+            </div>
+
+            {/* Interactive Business & Forex Tools Section */}
+            <div className="pt-4">
+              <InteractiveToolsSection onOpenArticle={onOpenArticle} className="my-6" />
             </div>
 
             {/* Cooking & Authentic Recipes Block */}

@@ -283,6 +283,18 @@ export const Footer: React.FC<FooterProps> = ({
                   تقارير وأخبار دولية
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => {
+                    onNavigate('tools');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="hover:text-amber-400 font-bold text-amber-300 transition flex items-center gap-1.5"
+                >
+                  <span>⚡</span>
+                  <span>أدوات وحاسبات الاستثمار 2026</span>
+                </button>
+              </li>
             </ul>
           </div>
 

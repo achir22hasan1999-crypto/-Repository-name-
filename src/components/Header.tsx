@@ -293,6 +293,15 @@ export const Header: React.FC<HeaderProps> = ({
                 </li>
               );
             })}
+            <li>
+              <button
+                onClick={() => onNavigate('tools')}
+                className="px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-red-600 text-white font-extrabold hover:shadow-md hover:scale-103"
+              >
+                <span>⚡</span>
+                <span>أدوات وحاسبات</span>
+              </button>
+            </li>
           </ul>
 
           <div className="hidden xl:flex items-center gap-3 pr-4 border-r border-stone-700 text-xs text-stone-300">
@@ -307,6 +316,20 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 px-4 py-3 max-h-[80vh] overflow-y-auto">
+          {/* Tools & Services Highlight */}
+          <div className="mb-4">
+            <button
+              onClick={() => {
+                onNavigate('tools');
+                setMobileMenuOpen(false);
+              }}
+              className="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-amber-500 to-red-600 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span>⚡</span>
+              <span>أدوات وحاسبات الاستثمار والمالية 2026</span>
+            </button>
+          </div>
+
           <p className="text-xs font-bold text-stone-400 mb-2 uppercase tracking-wider">
             أقسام الموقع
           </p>

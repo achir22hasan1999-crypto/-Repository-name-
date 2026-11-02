@@ -33,6 +33,7 @@ import {
   generateScheduledArticlesQueue 
 } from './utils/autoPublisher';
 import { resolveArticleImageUrl, getFallbackArticleImage } from './utils/imageUtils';
+import { InteractiveToolsSection } from './components/InteractiveToolsSection';
 import parliamentCoverImg from './assets/images/parliament_mansouri_cover_1790956433850.jpg';
 
 function safeStorageSet(key: string, value: string) {
@@ -280,7 +281,7 @@ export default function App() {
         setView('home');
         setActiveArticleId(null);
       } else {
-        const staticViews = ['about', 'contact', 'privacy', 'cookies', 'terms', 'disclaimer', 'corrections', 'copyright', 'author', 'seo-tools'];
+        const staticViews = ['about', 'contact', 'privacy', 'cookies', 'terms', 'disclaimer', 'corrections', 'copyright', 'author', 'seo-tools', 'tools'];
         const cleanPath = pathname.replace(/^\//, '').replace(/\/$/, '');
         if (staticViews.includes(cleanPath)) {
           setView(cleanPath as ViewMode);
@@ -353,6 +354,16 @@ export default function App() {
         if (metaDesc) {
           metaDesc.setAttribute('content', current.summary);
         }
+      }
+    } else if (view === 'tools') {
+      document.title = 'أدوات وحاسبات الاستثمار والمالية بالمغرب 2026 | المغرب العربي اليوم';
+      canonicalLink.setAttribute('href', `${DOMAIN_NAME}/tools`);
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          'منصة الأدوات والخدمات التفاعلية: حاسبة تكاليف وأرباح وكالات تحويل الأموال بالمغرب (كاش بلوس، وفاكاش، بريد كاش...)، محول العملات المباشر، وحاسبة الضريبة على الكراء 2026.'
+        );
       }
     } else if (view === '404') {
       document.title = 'مقال غير موجود (404) | المغرب العربي اليوم';
@@ -584,6 +595,10 @@ export default function App() {
       setShowSeoModal(true);
     } else {
       setView(newView);
+      const targetUrl = newView === 'home' ? '/' : `/${newView}`;
+      if (window.location.pathname !== targetUrl) {
+        window.history.pushState({}, '', targetUrl);
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -709,12 +724,17 @@ export default function App() {
           )
         )}
 
+        {view === 'tools' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            <InteractiveToolsSection onOpenArticle={handleOpenArticle} />
+          </div>
+        )}
+
         {['about', 'contact', 'privacy', 'cookies', 'terms', 'disclaimer', 'corrections', 'copyright', 'author'].includes(view) && (
           <LegalPages
             page={view as any}
             onNavigate={(newView) => {
-              setView(newView);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              handleNavigate(newView);
             }}
           />
         )}

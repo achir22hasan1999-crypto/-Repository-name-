@@ -7,6 +7,13 @@
     <changefreq>always</changefreq>
     <priority>1.0</priority>
   </url>
+  <!-- منصة الأدوات والخدمات التفاعلية: حاسبة وكالات تحويل الأموال ومحول العملات والضرائب 2026 -->
+  <url>
+    <loc>https://www.almaghreb-alyoum.com/tools</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
   <!-- خبر عاجل: واشنطن تحيل نسخة منقحة لمشروع قرار الصحراء وتثبت الحكم الذاتي كأساس وحيد -->
   <url>
     <loc>https://www.almaghreb-alyoum.com/article/us-submits-revised-unsc-draft-resolution-moroccan-sahara-autonomy-sole-basis</loc>
