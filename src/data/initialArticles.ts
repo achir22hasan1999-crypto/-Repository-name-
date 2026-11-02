@@ -22,6 +22,7 @@ import { ARTICLES_MOROCCO_FIFA_WORLDCUP_INSPECTION_2030 } from './articlesMorocc
 import { ARTICLES_MESSI_BALLON_DOR_2026 } from './articlesMessiBallonDor2026';
 import { ARTICLES_MBAPPE_CHINA_SPONSORSHIP } from './articlesMbappeChinaSponsorship';
 import { ARTICLES_PUTIN_MANSOURI_SUMMIT } from './articlesPutinMansouriSummit';
+import { ARTICLES_ES_SOUIH_MINURSO_SCENARIOS } from './articlesEsSouihMinursoScenarios';
 
 // 22 Arab Countries Trending Breaking Articles Collection
 export const ALL_22_ARAB_TRENDING_ARTICLES = [
@@ -43,6 +44,7 @@ const adjustedOriginals = ARTICLES_ORIGINAL.map(a => a.id === 'art-1' ? { ...a, 
 
 export const INITIAL_ARTICLES: Article[] = [
   { ...revisedUnscDraftStory, isLead: true, isBreaking: true },
+  ...ARTICLES_ES_SOUIH_MINURSO_SCENARIOS,
   ...ARTICLES_PUTIN_MANSOURI_SUMMIT,
   { ...breakingMinursoStory, isLead: false, isBreaking: true },
   ...ARTICLES_MOROCCO_JORDAN_CONDOLENCES,
