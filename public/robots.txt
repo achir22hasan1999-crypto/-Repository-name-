@@ -13,4 +13,4 @@ User-agent: Googlebot
 Allow: /
 
 Sitemap: https://www.almaghreb-alyoum.com/sitemap.xml
-Sitemap: https://almaghreb-alyoum.com/sitemap.xml
+

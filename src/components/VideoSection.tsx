@@ -148,18 +148,28 @@ export const VideoSection: React.FC<VideoSectionProps> = ({ articles, onOpenArti
                   <img
                     src={selectedVideo.leadImage}
                     alt={selectedVideo.title}
-                    className="absolute inset-0 w-full h-full object-cover opacity-30"
+                    className="absolute inset-0 w-full h-full object-cover opacity-35"
                   />
-                  <div className="relative z-10 max-w-md">
-                    <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
-                      <Play className="w-8 h-8 fill-white ml-1" />
-                    </div>
-                    <p className="text-white font-bold text-lg font-['Cairo'] mb-2">
-                      مقطع فيديو وثائقي تجريبي
+                  <div className="relative z-10 max-w-lg bg-stone-950/80 backdrop-blur-sm p-6 rounded-xl border border-stone-700">
+                    <span className="inline-block bg-red-700 text-white text-[11px] font-bold px-3 py-1 rounded-full mb-3">
+                      ملف وثائقي وتحليلي مصور
+                    </span>
+                    <p className="text-white font-bold text-base sm:text-lg font-['Cairo'] mb-2 leading-snug">
+                      {selectedVideo.title}
                     </p>
-                    <p className="text-xs text-stone-300">
-                      مشغل الفيديو يدعم دفق HLS و MP4 و YouTube وفق معايير البث الصحفي السريع.
+                    <p className="text-xs sm:text-sm text-stone-300 mb-4 leading-relaxed">
+                      {selectedVideo.summary}
                     </p>
+                    <button
+                      onClick={() => {
+                        const targetId = selectedVideo.id;
+                        setSelectedVideo(null);
+                        onOpenArticle(targetId);
+                      }}
+                      className="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition cursor-pointer"
+                    >
+                      قراءة التقرير والتحليل الكامل
+                    </button>
                   </div>
                 </div>
               )}

@@ -133,31 +133,43 @@ export const Footer: React.FC<FooterProps> = ({
             )}
           </div>
 
-          {/* Mobile Apps Teaser (3 cols) */}
+          {/* Quick Services & Tools Box (3 cols) */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-sm font-bold text-white font-['Cairo'] flex items-center gap-1.5">
-              <Smartphone className="w-4 h-4 text-red-500" />
-              <span>تطبيقات الهواتف الذكية</span>
+              <Globe className="w-4 h-4 text-red-500" />
+              <span>خدمات تفاعلية وأدلة مهنية</span>
             </h4>
             <p className="text-xs text-stone-400">
-              تابع التنبيهات العاجلة فور حدوثها عبر تطبيقنا للأندرويد و iOS (قريباً في المتاجر الرسمية):
+              وصول سريع إلى الأدوات الحسابية وأدلة المشاريع والسياسات التحريرية المعتمدة:
             </p>
 
             <div className="space-y-2">
-              <div className="p-2.5 bg-stone-900 border border-stone-800 rounded flex items-center gap-3">
-                <span className="text-lg">🤖</span>
+              <button
+                onClick={() => {
+                  onNavigate('tools');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="w-full text-right p-2.5 bg-stone-900 hover:bg-stone-800 border border-stone-800 rounded flex items-center gap-3 transition cursor-pointer"
+              >
+                <span className="text-lg">⚡</span>
                 <div className="text-[11px]">
-                  <span className="font-bold text-stone-200 block">تطبيق Android</span>
-                  <span className="text-stone-500">جاهز للتحميل والتثبيت (PWA/APK)</span>
+                  <span className="font-bold text-amber-300 block">منصة الحاسبات المالية 2026</span>
+                  <span className="text-stone-400">تكاليف الوكالات والعملات والضرائب</span>
                 </div>
-              </div>
-              <div className="p-2.5 bg-stone-900 border border-stone-800 rounded flex items-center gap-3">
-                <span className="text-lg">🍎</span>
+              </button>
+              <button
+                onClick={() => {
+                  onSelectCategory('agency');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="w-full text-right p-2.5 bg-stone-900 hover:bg-stone-800 border border-stone-800 rounded flex items-center gap-3 transition cursor-pointer"
+              >
+                <span className="text-lg">💼</span>
                 <div className="text-[11px]">
-                  <span className="font-bold text-stone-200 block">تطبيق iOS / iPhone</span>
-                  <span className="text-stone-500">متوافق مع App Store و Safari</span>
+                  <span className="font-bold text-stone-200 block">دليل تأسيس الوكالات بالمغرب</span>
+                  <span className="text-stone-400">الشروط القانونية ورأس المال والأرباح</span>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -357,8 +369,8 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>جميع الحقوق محفوظة © {new Date().getFullYear()} لموقع <strong>المغرب العربي اليوم</strong>.</span>
-            <span className="text-stone-600">
-              الموقع مجهز لـ Google AdSense ومتوافق مع المعايير الصحفية الدولية.
+            <span className="text-stone-500">
+              بوابة إخبارية مستقلة تلتزم بالمعايير المهنية وأخلاقيات الصحافة الدولية.
             </span>
             {/* Discreet Admin Gateway */}
             {isAdmin ? (

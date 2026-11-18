@@ -365,6 +365,19 @@ export default function App() {
           'منصة الأدوات والخدمات التفاعلية: حاسبة تكاليف وأرباح وكالات تحويل الأموال بالمغرب (كاش بلوس، وفاكاش، بريد كاش...)، محول العملات المباشر، وحاسبة الضريبة على الكراء 2026.'
         );
       }
+    } else if (view === 'home' && currentCategory !== 'all') {
+      document.title = `قسم ${currentCategory} | المغرب العربي اليوم`;
+      canonicalLink.setAttribute('href', `${DOMAIN_NAME}/category/${currentCategory}`);
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          `تابع أحدث التقارير الإخبارية والتحليلات الاقتصادية والرياضية في قسم ${currentCategory} على بوابة المغرب العربي اليوم.`
+        );
+      }
+    } else if (['about', 'contact', 'privacy', 'cookies', 'terms', 'disclaimer', 'corrections', 'copyright', 'author'].includes(view)) {
+      document.title = `${view} | المغرب العربي اليوم`;
+      canonicalLink.setAttribute('href', `${DOMAIN_NAME}/${view}`);
     } else if (view === '404') {
       document.title = 'مقال غير موجود (404) | المغرب العربي اليوم';
       canonicalLink.setAttribute('href', `${DOMAIN_NAME}/`);
@@ -379,7 +392,7 @@ export default function App() {
         );
       }
     }
-  }, [view, activeArticleId, articles]);
+  }, [view, activeArticleId, currentCategory, articles]);
 
   // Actions
   const handleOpenArticle = (id: string, pushHistory: boolean = true) => {

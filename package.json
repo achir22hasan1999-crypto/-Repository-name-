@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && (cp -f dist/app/applet/index.html dist/index.html 2>/dev/null || true)",
+    "build": "vite build && (cp -f dist/app/applet/index.html dist/index.html 2>/dev/null || true) && node scripts/prerender.cjs",
     "preview": "vite preview",
     "start": "node server.js",
     "clean": "rm -rf dist",
