@@ -12,7 +12,7 @@ import { Article } from '../types';
  * Arabic journalistic prose, structured with deep investigative sections,
  * field reports, and fully optimized for Google AdSense & SEO.
  */
-export const ARTICLES_DAILY_AUTOPILOT: Article[] = [
+const RAW_DAILY_AUTOPILOT = [
   // 1. المغرب
   {
     id: "autopilot-morocco-high-speed-rail-marrakech-agadir-water-2026",
@@ -518,3 +518,21 @@ export const ARTICLES_DAILY_AUTOPILOT: Article[] = [
   }
 
 ];
+
+export const ARTICLES_DAILY_AUTOPILOT: Article[] = RAW_DAILY_AUTOPILOT.map((a) => ({
+  ...a,
+  country: a.country as Article['country'],
+  category: a.category as Article['category'],
+  leadImage: a.imageUrl,
+  publishDate: a.publishedAt,
+  source: 'المغرب العربي اليوم',
+  tags: a.keywords,
+  readsCount: a.views,
+  likesCount: a.likes,
+  commentsCount: 0,
+  author: {
+    name: a.author,
+    role: 'محرر صحفي - المغرب العربي اليوم',
+    avatar: '/assets/images/editorial-avatar.png',
+  },
+}));

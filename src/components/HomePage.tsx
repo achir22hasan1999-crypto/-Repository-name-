@@ -442,7 +442,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </section>
 
-          {/* Featured Auto-Published Cooking Recipes Banner & Grid */}
+          {/* Featured Moroccan Culinary Recipes Section */}
           <section className="my-10 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100/40 dark:from-stone-900 dark:via-stone-900/90 dark:to-stone-950 border border-amber-200/80 dark:border-amber-900/40 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-amber-200/60 dark:border-amber-900/40 gap-3">
               <div className="flex items-center gap-2.5">
@@ -450,15 +450,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <h2 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-white font-['Cairo'] flex items-center gap-2">
-                      <span>وصفات الطبخ المنشورة تلقائياً اليوم</span>
+                      <span>مختارات المطبخ المغربي والعربي الأصيل</span>
                       <span>🍲</span>
                     </h2>
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-600 text-white shadow-xs">
-                      ⚡ نُشر تلقائياً اليوم
-                    </span>
                   </div>
                   <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
-                    أشهى 5 وصفات مغربية تقليدية حصرية نُشرت آلياً بأسرار التتبيل والطهي والمقادير المضبوطة
+                    أشهى 5 وصفات مغربية تقليدية حصرية بأسرار التتبيل والطهي والمقادير المضبوطة
                   </p>
                 </div>
               </div>

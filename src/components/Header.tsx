@@ -284,11 +284,6 @@ export const Header: React.FC<HeaderProps> = ({
                   >
                     {cat.flag && <span>{cat.flag}</span>}
                     <span>{cat.label}</span>
-                    {cat.id === 'cooking' && (
-                      <span className="bg-amber-400 text-stone-950 text-[10px] font-black px-1.5 py-0.5 rounded-full mr-1">
-                        5 جديدة
-                      </span>
-                    )}
                   </button>
                 </li>
               );
@@ -352,11 +347,6 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   {cat.flag && <span>{cat.flag}</span>}
                   <span>{cat.label}</span>
-                  {cat.id === 'cooking' && (
-                    <span className="bg-amber-400 text-stone-950 text-[10px] font-black px-1.5 py-0.5 rounded-full mr-auto">
-                      5 جديدة ⚡
-                    </span>
-                  )}
                 </button>
               );
             })}

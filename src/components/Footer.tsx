@@ -75,26 +75,45 @@ export const Footer: React.FC<FooterProps> = ({
               بوابة إخبارية رقمية رائدة تعنى بمتابعة الشأن السياسي، الاقتصادي، الاجتماعي، الرياضي والثقافي في بلدان المغرب العربي الخمسة (المغرب، الجزائر، تونس، ليبيا، موريتانيا) والعالم برؤية مهنية ومستقلة.
             </p>
 
-            {/* Social channels */}
-            <div className="flex items-center gap-3 pt-2">
-              <span className="text-xs text-stone-400">تابعنا:</span>
-              {[
-                { name: 'فيسبوك', href: 'https://facebook.com', color: 'hover:text-[#1877F2]' },
-                { name: 'منصة X', href: 'https://x.com', color: 'hover:text-white' },
-                { name: 'يوتيوب', href: 'https://youtube.com', color: 'hover:text-[#FF0000]' },
-                { name: 'تيليغرام', href: 'https://t.me', color: 'hover:text-[#229ED9]' },
-                { name: 'واتساب', href: 'https://whatsapp.com', color: 'hover:text-[#25D366]' },
-              ].map((s, i) => (
-                <a
-                  key={i}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-xs text-stone-400 ${s.color} transition`}
-                >
-                  {s.name}
-                </a>
-              ))}
+            {/* Editorial Quick Links */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <span className="text-xs text-stone-400">روابط سريعة:</span>
+              <button
+                onClick={() => {
+                  onNavigate('about');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-xs text-stone-400 hover:text-white transition cursor-pointer"
+              >
+                من نحن
+              </button>
+              <button
+                onClick={() => {
+                  onNavigate('author');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-xs text-stone-400 hover:text-white transition cursor-pointer"
+              >
+                هيئة التحرير
+              </button>
+              <button
+                onClick={() => {
+                  onNavigate('corrections');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-xs text-stone-400 hover:text-white transition cursor-pointer"
+              >
+                سياسة التصحيح
+              </button>
+              <button
+                onClick={() => {
+                  onNavigate('contact');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-xs text-stone-400 hover:text-white transition cursor-pointer"
+              >
+                اتصل بنا
+              </button>
             </div>
           </div>
 

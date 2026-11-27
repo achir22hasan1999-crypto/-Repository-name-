@@ -97,13 +97,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               <span>عاجل</span>
             </div>
           )}
-
-          {article.isAutoPublished && (
-            <div className="absolute top-4 left-4 bg-emerald-700/95 text-white font-bold text-xs px-2.5 py-1 rounded shadow-md flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
-              <span>⚡ نشر تلقائي</span>
-            </div>
-          )}
         </a>
 
         <div className="p-6">
@@ -181,11 +174,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           {article.isBreaking && (
             <span className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">
               عاجل
-            </span>
-          )}
-          {article.isAutoPublished && (
-            <span className="absolute top-2 left-2 bg-emerald-700/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
-              ⚡ نشر تلقائي
             </span>
           )}
         </a>
@@ -314,12 +302,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         {article.isBreaking && (
           <span className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
             عاجل
-          </span>
-        )}
-        {article.isAutoPublished && (
-          <span className="absolute top-2 left-2 bg-emerald-700/90 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
-            <span>⚡ نشر تلقائي</span>
           </span>
         )}
       </a>

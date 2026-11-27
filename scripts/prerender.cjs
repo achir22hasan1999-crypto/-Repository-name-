@@ -27,8 +27,29 @@ const distAssetFiles = fs.existsSync(distAssetsDir) ? fs.readdirSync(distAssetsD
 
 require('tsx/cjs');
 
-const { INITIAL_ARTICLES, CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } = require('../src/data/initialArticles');
+const { INITIAL_ARTICLES: RAW_INITIAL_ARTICLES, CATEGORIES_CONFIG, MAGHREB_COUNTRIES, GULF_COUNTRIES } = require('../src/data/initialArticles');
 const { getArticleUrl, getFullArticleUrl } = require('../src/utils/slugUtils');
+
+const INITIAL_ARTICLES = RAW_INITIAL_ARTICLES.map((art) => {
+  const leadImage = art.leadImage || art.imageUrl || '/assets/images/unsc_sahara_draft_2026.jpg';
+  const publishDate = art.publishDate || art.publishedAt || new Date().toISOString();
+  const updatedDate = art.updatedDate || publishDate;
+  const author =
+    typeof art.author === 'string'
+      ? { name: art.author, role: 'محرر صحفي - المغرب العربي اليوم' }
+      : art.author && typeof art.author === 'object'
+        ? { name: art.author.name || 'هيئة التحرير', role: art.author.role || 'محرر صحفي' }
+        : { name: 'هيئة التحرير', role: 'محرر صحفي' };
+  const tags = Array.isArray(art.tags) ? art.tags : Array.isArray(art.keywords) ? art.keywords : [];
+  return {
+    ...art,
+    leadImage,
+    publishDate,
+    updatedDate,
+    author,
+    tags,
+  };
+});
 
 const baseHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf8');
 
@@ -163,13 +184,22 @@ function buildPageHtml({ title, description, canonicalUrl, ogType = 'website', o
     html = html.replace('</head>', `    ${schemaScript}\n  </head>`);
   }
 
-  // Replace root inner HTML while keeping Vite's injected <script> and <link> tags intact!
-  const rootStart = html.indexOf('<div id="root">');
-  const scriptAfterRoot = html.indexOf('<script type="module"', rootStart);
-  if (rootStart !== -1 && scriptAfterRoot !== -1) {
-    const beforeRoot = html.slice(0, rootStart);
-    const afterRootScript = html.slice(scriptAfterRoot);
-    html = `${beforeRoot}<div id="root">${rootInnerHtml}\n    </div>\n    ${afterRootScript}`;
+  // Replace root inner HTML reliably regardless of where Vite places <script type="module">
+  const startMarker = '<!--PRERENDER_BODY_START-->';
+  const endMarker = '<!--PRERENDER_BODY_END-->';
+  const mStart = html.indexOf(startMarker);
+  const mEnd = html.indexOf(endMarker);
+
+  if (mStart !== -1 && mEnd !== -1 && mEnd > mStart) {
+    html = `${html.slice(0, mStart)}${startMarker}${rootInnerHtml}\n    ${endMarker}${html.slice(mEnd + endMarker.length)}`;
+  } else {
+    const rootStart = html.indexOf('<div id="root">');
+    const bodyEnd = html.indexOf('</body>', rootStart);
+    const rootClose = bodyEnd !== -1 ? html.lastIndexOf('</div>', bodyEnd) : -1;
+    if (rootStart === -1 || rootClose === -1 || rootClose <= rootStart) {
+      throw new Error(`Failed to locate <div id="root">...</div> boundaries in dist/index.html for ${canonicalUrl}`);
+    }
+    html = `${html.slice(0, rootStart)}<div id="root">${rootInnerHtml}\n    </div>${html.slice(rootClose + '</div>'.length)}`;
   }
 
   return html;
